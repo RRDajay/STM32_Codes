@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "stm32f1xx.h"
 
-#define __HAL_FLASH_PREFETCH_BUFFER_ENABLE()    (FLASH->ACR |= FLASH_ACR_PRFTBE)
+#define FLASH_PREFETCH_BUFFER_ENABLE()    (FLASH->ACR |= FLASH_ACR_PRFTBE)
 
 void delay(void) {
 	for(uint64_t i = 0; i <= 100000; i++) {
@@ -12,7 +12,7 @@ void delay(void) {
 void init(void) {
 
 	// Configure the Flash prefetch.
-	__HAL_FLASH_PREFETCH_BUFFER_ENABLE();
+	FLASH_PREFETCH_BUFFER_ENABLE();
 
 	// Set Interrupt Group Priority
 	NVIC_SetPriorityGrouping(0x00000003U);
