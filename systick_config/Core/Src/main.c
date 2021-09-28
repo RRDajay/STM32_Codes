@@ -27,6 +27,7 @@ void init(void) {
 	// Set Interrupt Group Priority
 	NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
+	// Initialize Systick
 	systick_init();
 }
 
