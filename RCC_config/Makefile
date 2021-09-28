@@ -37,6 +37,7 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Core/Src/main.c \
+Core/Src/systick_init.c
 
 # ASM sources
 ASM_SOURCES =  \
