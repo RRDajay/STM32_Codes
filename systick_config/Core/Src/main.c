@@ -1,23 +1,24 @@
 #include <stdint.h>
 #include "stm32f1xx.h"
+#include "config.h"
 
-#define FLASH_PREFETCH_BUFFER_ENABLE()    (FLASH->ACR |= FLASH_ACR_PRFTBE)
-
-#define NVIC_PRIORITYGROUP_0         0x00000007U /*!< 0 bits for pre-emption priority
-                                                      4 bits for subpriority */
-#define NVIC_PRIORITYGROUP_1         0x00000006U /*!< 1 bits for pre-emption priority
-                                                      3 bits for subpriority */
-#define NVIC_PRIORITYGROUP_2         0x00000005U /*!< 2 bits for pre-emption priority
-                                                      2 bits for subpriority */
-#define NVIC_PRIORITYGROUP_3         0x00000004U /*!< 3 bits for pre-emption priority
-                                                      1 bits for subpriority */
-#define NVIC_PRIORITYGROUP_4         0x00000003U /*!< 4 bits for pre-emption priority
-                                                      0 bits for subpriority */
+#define SystemCoreClock 8000000UL;
 
 void delay(void) {
 	for(uint64_t i = 0; i <= 100000; i++) {
 		asm("nop");
 	}
+}
+
+void SysTick_Handler(void) {
+	GPIOC->ODR ^= (1 << GPIO_ODR_ODR13_Pos);
+}
+
+void systick_init(void) {
+	SysTick->LOAD |= SystemCoreClock;
+	NVIC_SetPriority(SysTick_IRQn, (1UL << __NVIC_PRIO_BITS) - 1UL);
+	SysTick->VAL = 0UL;
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk;
 }
 
 void init(void) {
@@ -27,6 +28,8 @@ void init(void) {
 
 	// Set Interrupt Group Priority
 	NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+
+	systick_init();
 }
 
 int main(void)
@@ -41,7 +44,7 @@ int main(void)
     /* Loop forever */
 	while(1) {
 
-		delay();
-		GPIOC->ODR ^= (1 << GPIO_ODR_ODR13_Pos);
+		// delay();
+		
 	}
 }
