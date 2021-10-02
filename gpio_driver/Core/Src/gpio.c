@@ -43,23 +43,23 @@ void config_output_pin(GPIO_TypeDef *port, uint32_t pinNumber, OUTPUT_MODE_TYPES
             switch (outputModeTypes)
             {
                 case OUTPUT_PP:
-                    port->CRH &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
-                    port->CRH |= ((OUTPUT_PP << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
+                    port->CRL &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
+                    port->CRL |= ((OUTPUT_PP << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
                     break;
                 
                 case OUTPUT_OD:
-                    port->CRH &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
-                    port->CRH |= ((OUTPUT_OD << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
+                    port->CRL &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
+                    port->CRL |= ((OUTPUT_OD << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
                     break;
 
                 case OUTPUT_AF_PP:
-                    port->CRH &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
-                    port->CRH |= ((OUTPUT_AF_PP << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
+                    port->CRL &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
+                    port->CRL |= ((OUTPUT_AF_PP << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
                     break;
 
                 case OUTPUT_AF_OD:
-                    port->CRH &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
-                    port->CRH |= ((OUTPUT_AF_OD << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
+                    port->CRL &= ~((1 << (PINPOS[pinNumber]+2)) | (1 << PINPOS[pinNumber]));
+                    port->CRL |= ((OUTPUT_AF_OD << (PINPOS[pinNumber]+2)) | (pinSpeed << PINPOS[pinNumber]));
                     break;
                 
                 default:
