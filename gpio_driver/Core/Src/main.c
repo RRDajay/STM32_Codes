@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "gpio.h"
 #include "stm32f1xx.h"
 
@@ -8,24 +7,30 @@ void delay(void) {
 	}
 }
 
-
-
 int main(void)
 {
-	// Enable APB2 Clock
-	RCC->APB2ENR |= (1 << RCC_APB2ENR_IOPCEN_Pos);
+	// Enable APB2 Clocks for PORTA, PORTB, and PORTC
+	GPIO_CLOCK_ENABLE_PORTA;
+	GPIO_CLOCK_ENABLE_PORTB;
+	GPIO_CLOCK_ENABLE_PORTC;
 
-	// PC13 as output
-	// GPIOC->CRH |= GPIO_CRH_CNF13_0 | GPIO_CRH_MODE13; 
+	// Configure PA1, PB1, PC13, and PC15 as output
+	config_output_pin(GPIOA, 1, OUTPUT_PP, S50);
+	config_output_pin(GPIOB, 1, OUTPUT_PP, S50);
 	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
+	config_output_pin(GPIOC, 15, OUTPUT_PP, S50);
 
     /* Loop forever */
 	while(1) {
 
+		// simple delay
 		delay();
-		
-		// Reset LED
-		GPIOC->ODR ^= (1 << GPIO_ODR_ODR13_Pos);
 
+		// Toggle output for PA1, PB1, PC13, and PC15
+		pin_toggle(GPIOA, 1);
+		pin_toggle(GPIOB, 1);
+		pin_toggle(GPIOC, 13);
+		pin_toggle(GPIOC, 15);
+		
 	}
 }

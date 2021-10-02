@@ -41,7 +41,16 @@ typedef enum  {
 #define GPIO_CLOCK_ENABLE_PORTD             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPDEN_Pos)
 #define GPIO_CLOCK_ENABLE_PORTE             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPEEN_Pos)
 
-void config_output_pin(GPIO_TypeDef *port, uint32_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed);
-void config_input_pin(GPIO_TypeDef *port, uint32_t pinNumber, INPUT_MODE_TYPES inputModeTypes);
+// Functions for pin configuration
+void config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed);
+void config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES inputModeTypes);
+
+// Functions for pin output
+void pin_reset(GPIO_TypeDef *port, uint8_t pinNumber);
+void pin_set(GPIO_TypeDef *port, uint8_t pinNumber);
+void pin_toggle(GPIO_TypeDef *port, uint8_t pinNumner);
+
+// Functions for pin input
+uint16_t pin_read(GPIO_TypeDef *port, uint8_t pinNumber);
 
 #endif
