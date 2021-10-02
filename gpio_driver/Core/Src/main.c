@@ -36,7 +36,7 @@ int main(void)
 {
 
 	// RCC Configuration
-	RCC_config();
+	// RCC_config();
 
 	// Enable APB2 Clocks for PORTA, PORTB, and PORTC
 	GPIO_CLOCK_ENABLE_PORTA;
@@ -44,7 +44,7 @@ int main(void)
 	GPIO_CLOCK_ENABLE_PORTC;
 
 	// Configure PA1, PB1, PC13, and PC15 as output
-	config_output_pin(GPIOA, 1, OUTPUT_PP, S50);
+	config_input_pin(GPIOA, 1, INPUT_PU_PD);
 	config_output_pin(GPIOB, 1, OUTPUT_PP, S50);
 	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 	config_output_pin(GPIOC, 15, OUTPUT_PP, S50);
@@ -56,9 +56,11 @@ int main(void)
 		delay();
 
 		// Toggle output for PA1, PB1, PC13, and PC15
-		pin_toggle(GPIOA, 1);
+		if (pin_read(GPIOA, 1)) {
+			pin_toggle(GPIOC, 13);
+		}
+
 		pin_toggle(GPIOB, 1);
-		pin_toggle(GPIOC, 13);
 		pin_toggle(GPIOC, 15);
 		
 	}
