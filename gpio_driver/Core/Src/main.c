@@ -16,7 +16,8 @@ int main(void)
 	RCC->APB2ENR |= (1 << RCC_APB2ENR_IOPCEN_Pos);
 
 	// PC13 as output
-	GPIOC->CRH |= GPIO_CRH_CNF13_0 | GPIO_CRH_MODE13; 
+	// GPIOC->CRH |= GPIO_CRH_CNF13_0 | GPIO_CRH_MODE13; 
+	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 
     /* Loop forever */
 	while(1) {
