@@ -36,7 +36,10 @@ void RCC_config(void) {
 	RCC->CFGR = (RCC->CFGR | RCC_CFGR_SW_PLL); // Set PLL as Clock source
 	while(!(RCC->CFGR & RCC_CFGR_SWS_PLL));  // Wait till PLL is CLK SRC
 
-	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; 
+	RCC->CFGR  |= (0b111 << RCC_CFGR_MCO_Pos);	
+	
+	RCC->APB2ENR |= (1 << RCC_APB2ENR_IOPAEN_Pos); 
+	RCC->APB2ENR |= (1 << RCC_APB2ENR_IOPCEN_Pos); 
 
 }
 

@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = template_code
+TARGET = gpio_demo
 
 
 ######################################
@@ -96,7 +96,7 @@ AS_INCLUDES =
 C_INCLUDES =  \
 -ICore/Inc \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
 
 
 # compile gcc flags

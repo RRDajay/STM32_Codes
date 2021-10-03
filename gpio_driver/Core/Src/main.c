@@ -39,12 +39,15 @@ int main(void)
 	// RCC_config();
 
 	// Enable APB2 Clocks for PORTA, PORTB, and PORTC
+	RCC->CFGR  |= (0b111 << RCC_CFGR_MCO_Pos);	
+	
 	GPIO_CLOCK_ENABLE_PORTA;
 	GPIO_CLOCK_ENABLE_PORTB;
 	GPIO_CLOCK_ENABLE_PORTC;
 
 	// Configure PA1, PB1, PC13, and PC15 as output
 	config_input_pin(GPIOA, 1, INPUT_PU_PD);
+	config_output_pin(GPIOA, 8, OUTPUT_AF_PP, S50);
 	config_output_pin(GPIOB, 1, OUTPUT_PP, S50);
 	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 	config_output_pin(GPIOC, 15, OUTPUT_PP, S50);
