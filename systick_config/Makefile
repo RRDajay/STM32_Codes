@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = template_code
+TARGET = systick_demo
 
 
 ######################################
@@ -37,6 +37,9 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Core/Src/main.c \
+Core/Src/gpio.c \
+Core/Src/systick.c \
+Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c 
 
 # ASM sources
 ASM_SOURCES =  \
@@ -95,7 +98,7 @@ AS_INCLUDES =
 C_INCLUDES =  \
 -ICore/Inc \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
 
 
 # compile gcc flags

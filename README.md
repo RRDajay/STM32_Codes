@@ -8,11 +8,12 @@ Development Tools: VS Code, OpenOCD, GNU Make, ARM GCC Compiler, and ST-Link v2
 
 1. Blink Led / Hello World - (This is also my template whenever setting up a new project.)
 2. RCC Configuration.
-3. SysTick Timer Configuration
-4. GPIO Peripheral Driver
-5. Delay functions based on systick timer
-5. Custom Bootloader (in-progress)
-6. PWM Peripherals (in-progress)
-7. Uart Peripherals (in-progress)
+3. SysTick Timer Configuration with interrupt
+4. Delay functions based on systick timer
+5. GPIO Peripheral Driver
+
+6. Custom Bootloader (in-progress)
+7. PWM Peripherals (in-progress)
+8. Uart Peripherals (in-progress)
 
 
