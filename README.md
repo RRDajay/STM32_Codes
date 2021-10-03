@@ -10,6 +10,7 @@ Development Tools: VS Code, OpenOCD, GNU Make, ARM GCC Compiler, and ST-Link v2
 2. RCC Configuration.
 3. SysTick Timer Configuration
 4. GPIO Peripheral Driver
+5. Delay functions based on systick timer
 5. Custom Bootloader (in-progress)
 6. PWM Peripherals (in-progress)
 7. Uart Peripherals (in-progress)
