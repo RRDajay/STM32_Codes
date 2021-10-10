@@ -22,7 +22,7 @@ TARGET = systick_demo
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -Og
+OPT = -O0
 
 
 #######################################
@@ -39,6 +39,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/systick.c \
+Core/Src/usart.c \
 Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c 
 
 # ASM sources
@@ -164,6 +165,7 @@ $(BUILD_DIR):
 #######################################
 clean:
 	-rm -fR $(BUILD_DIR)
+
   
 #######################################
 # dependencies

@@ -12,7 +12,7 @@ void systick_init(void) {
 }
 
 void SysTick_Handler(void) {
-	pin_toggle(GPIOC, 13);
+	tickCount++;
 }
 
 void delay_ms(uint32_t desiredTick){

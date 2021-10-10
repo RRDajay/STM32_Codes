@@ -9,7 +9,43 @@ uint8_t pinPos[16] = {
     
 };
 
-void config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed)
+void gpio_clock_enable_af(void) {                
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_AFIOEN_Pos);
+
+}   
+
+void gpio_clock_enable_porta(void) {             
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPAEN_Pos);
+
+}
+
+void gpio_clock_enable_portb(void) {             
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPBEN_Pos);
+
+}
+
+void gpio_clock_enable_portc(void) {             
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPCEN_Pos);
+
+}
+
+void gpio_clock_enable_portd(void) {             
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPDEN_Pos);
+
+}
+
+void gpio_clock_enable_porte(void) {             
+    
+    (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPEEN_Pos);
+
+}
+
+void gpio_config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed)
 {
     if (pinNumber >= 8) 
     {
@@ -70,7 +106,7 @@ void config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES 
     }
 }
 
-void config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES inputModeTypes)
+void gpio_config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES inputModeTypes)
 {
     if (pinNumber >= 8) 
     {
@@ -121,7 +157,7 @@ void config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES in
     }
 }
 
-void pin_reset(GPIO_TypeDef *port, uint8_t pinNumber)
+void gpio_pin_reset(GPIO_TypeDef *port, uint8_t pinNumber)
 {
     // Clear BSx Bit
     port->BSRR &= ~(1 << pinNumber); 
@@ -131,7 +167,7 @@ void pin_reset(GPIO_TypeDef *port, uint8_t pinNumber)
 
 }
 
-void pin_set(GPIO_TypeDef *port, uint8_t pinNumber) {
+void gpio_pin_set(GPIO_TypeDef *port, uint8_t pinNumber) {
 
     // Clear BRy Bit
     port->BSRR &= ~(1 << (pinNumber + 16)); 
@@ -140,14 +176,14 @@ void pin_set(GPIO_TypeDef *port, uint8_t pinNumber) {
     port->BSRR |= (1 << pinNumber); 
 }
 
-void pin_toggle(GPIO_TypeDef *port, uint8_t pinNumber) {
+void gpio_pin_toggle(GPIO_TypeDef *port, uint8_t pinNumber) {
 
     // toggles the output data register
     port->ODR ^= (1 << pinNumber);
 
 }
 
-_Bool pin_read(GPIO_TypeDef *port, uint8_t pinNumber) {
+_Bool gpio_pin_read(GPIO_TypeDef *port, uint8_t pinNumber) {
 
     // put the value of IDR in temp
     uint16_t temp = port->IDR;

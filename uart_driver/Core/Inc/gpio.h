@@ -34,23 +34,23 @@ typedef enum  {
 } PIN_SPEED;
 
 // Clock Enabling
-#define GPIO_CLOCK_ENABLE_AF                (RCC->APB2ENR |= 1 << RCC_APB2ENR_AFIOEN_Pos)     
-#define GPIO_CLOCK_ENABLE_PORTA             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPAEN_Pos)
-#define GPIO_CLOCK_ENABLE_PORTB             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPBEN_Pos)
-#define GPIO_CLOCK_ENABLE_PORTC             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPCEN_Pos)
-#define GPIO_CLOCK_ENABLE_PORTD             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPDEN_Pos)
-#define GPIO_CLOCK_ENABLE_PORTE             (RCC->APB2ENR |= 1 << RCC_APB2ENR_IOPEEN_Pos)
+void gpio_clock_enable_af(void);     
+void gpio_clock_enable_porta(void);
+void gpio_clock_enable_portb(void);
+void gpio_clock_enable_portc(void);
+void gpio_clock_enable_portd(void);
+void gpio_clock_enable_porte(void);
 
 // Functions for pin configuration
-void config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed);
-void config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES inputModeTypes);
+void gpio_config_output_pin(GPIO_TypeDef *port, uint8_t pinNumber, OUTPUT_MODE_TYPES outputModeTypes, PIN_SPEED pinSpeed);
+void gpio_config_input_pin(GPIO_TypeDef *port, uint8_t pinNumber, INPUT_MODE_TYPES inputModeTypes);
 
 // Functions for pin output
-void pin_reset(GPIO_TypeDef *port, uint8_t pinNumber);
-void pin_set(GPIO_TypeDef *port, uint8_t pinNumber);
-void pin_toggle(GPIO_TypeDef *port, uint8_t pinNumner);
+void gpio_pin_reset(GPIO_TypeDef *port, uint8_t pinNumber);
+void gpio_pin_set(GPIO_TypeDef *port, uint8_t pinNumber);
+void gpio_pin_toggle(GPIO_TypeDef *port, uint8_t pinNumner);
 
 // Functions for pin input
-_Bool pin_read(GPIO_TypeDef *port, uint8_t pinNumber);
+_Bool gpio_pin_read(GPIO_TypeDef *port, uint8_t pinNumber);
 
 #endif

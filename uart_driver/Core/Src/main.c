@@ -1,5 +1,6 @@
 #include "gpio.h"
 #include "systick.h"
+#include "usart.h"
 #include "stm32f1xx.h"
 
 void RCC_config(void) {
@@ -39,19 +40,31 @@ int main(void)
 {
 	
 	initialize();
-	
-	// SysClock Output on MCO Pin
-	RCC->CFGR  |= (0b111 << RCC_CFGR_MCO_Pos);	
-	
+
 	// Enable APB2 Clock PORTC
-	GPIO_CLOCK_ENABLE_PORTC;
+	gpio_clock_enable_portc();
 
 	// Configure PC13 as output
-	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
+	gpio_config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
+
+	// USART Settings
+
+	// Enable usart clock and gpio clock
+	usart_clock_enable();
+	gpio_clock_enable_porta();
+
+	// Configure TX/RX Pins
+	gpio_config_output_pin(GPIOA, 9, OUTPUT_AF_PP, S50);
+	gpio_config_input_pin(GPIOA, 10, INPUT_PU_PD);
+
+	// Enable usart (default settings)
+	usart_setup(USART1, 115200);
 
     /* Loop forever */
 	while(1) {
-
+		// usart_send_string(USART1, (uint8_t*)"Hello World");
+		usart_write(USART1, 'a');
+		uint8_t temp = usart_read(USART1);
 
 	}
 }
