@@ -118,9 +118,16 @@ void usart_enable_rxneie(USART_TypeDef *usart){usart->CR1 |= (1 << 5);}
 void usart_enable_idleie(USART_TypeDef *usart){usart->CR1 |= (1 << 4);}
 
 void usart_disable_irq(USART_TypeDef *usart){
-    if(usart == USART1) {NVIC_DisableIRQ(USART1_IRQn);}
-    if(usart == USART2) {NVIC_DisableIRQ(USART2_IRQn);}
-    if(usart == USART3) {NVIC_DisableIRQ(USART3_IRQn);}
+    
+    if(usart == USART1) 
+        NVIC_DisableIRQ(USART1_IRQn);
+    
+    if(usart == USART2) 
+        NVIC_DisableIRQ(USART2_IRQn);
+    
+    if(usart == USART3) 
+        NVIC_DisableIRQ(USART3_IRQn);
+        
 }
 
 void usart_disable_peie(USART_TypeDef *usart){usart->CR1 &= ~(1 << 8);}
