@@ -92,3 +92,28 @@ uint32_t rcc_get_apb1_clk(void) {
 
     return (sys_clk / ahb_clk) / apb1_clk;
 }
+
+void rcc_usart1_clock_enable(void){}
+void rcc_spi1_clock_enable(void){}
+void rcc_tim1_clock_enable(void){}
+void rcc_adc2_clock_enable(void){}
+void rcc_adc1_clock_enable(void){}
+void rcc_iope_clock_enable(void){}
+void rcc_iopd_clock_enable(void){}
+void rcc_iopc_clock_enable(void){}
+void rcc_iopb_clock_enable(void){}
+void rcc_iopa_clock_enable(void){}
+void rcc_afio_clock_enable(void){}
+
+
+void rcc_usart1_clock_disable(void){}
+void rcc_spi1_clock_disable(void){}
+void rcc_tim1_clock_disable(void){}
+void rcc_adc2_clock_disable(void){}
+void rcc_adc1_clock_disable(void){}
+void rcc_iope_clock_disable(void){}
+void rcc_iopd_clock_disable(void){}
+void rcc_iopc_clock_disable(void){}
+void rcc_iopb_clock_disable(void){}
+void rcc_iopa_clock_disable(void){}
+void rcc_afio_clock_disable(void){}
