@@ -46,17 +46,17 @@ int main(void)
 	RCC->CFGR  |= (0b111 << RCC_CFGR_MCO_Pos);	
 	
 	// Enable APB2 Clock PORTC
-	GPIO_CLOCK_ENABLE_PORTA;
-	GPIO_CLOCK_ENABLE_PORTC;
+	gpio_clock_enable_porta();
+	gpio_clock_enable_portc();
 
 	// Configure PC13 as output
-	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
+	gpio_config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 
     /* Loop forever */
 	while(1) {
 
 		delay_ms(500);
-		pin_toggle(GPIOC, 13);
+		gpio_pin_toggle(GPIOC, 13);
 
 	}
 }
