@@ -41,16 +41,16 @@ int main(void)
 	// Enable APB2 Clocks for PORTA, PORTB, and PORTC
 	RCC->CFGR  |= (0b111 << RCC_CFGR_MCO_Pos);	
 	
-	GPIO_CLOCK_ENABLE_PORTA;
-	GPIO_CLOCK_ENABLE_PORTB;
-	GPIO_CLOCK_ENABLE_PORTC;
+	gpio_clock_enable_porta();
+	gpio_clock_enable_portb();
+	gpio_clock_enable_portc();
 
 	// Configure PA1, PB1, PC13, and PC15 as output
-	config_input_pin(GPIOA, 1, INPUT_PU_PD);
-	config_output_pin(GPIOA, 8, OUTPUT_AF_PP, S50);
-	config_output_pin(GPIOB, 1, OUTPUT_PP, S50);
-	config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
-	config_output_pin(GPIOC, 15, OUTPUT_PP, S50);
+	gpio_config_input_pin(GPIOA, 1, INPUT_PU_PD);
+	gpio_config_output_pin(GPIOA, 8, OUTPUT_AF_PP, S50);
+	gpio_config_output_pin(GPIOB, 1, OUTPUT_PP, S50);
+	gpio_config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
+	gpio_config_output_pin(GPIOC, 15, OUTPUT_PP, S50);
 
     /* Loop forever */
 	while(1) {
@@ -59,12 +59,12 @@ int main(void)
 		delay();
 
 		// Toggle output for PA1, PB1, PC13, and PC15
-		if (pin_read(GPIOA, 1)) {
-			pin_toggle(GPIOC, 13);
+		if (gpio_pin_read(GPIOA, 1)) {
+			gpio_pin_toggle(GPIOC, 13);
 		}
 
-		pin_toggle(GPIOB, 1);
-		pin_toggle(GPIOC, 15);
+		gpio_pin_toggle(GPIOB, 1);
+		gpio_pin_toggle(GPIOC, 15);
 		
 	}
 }
