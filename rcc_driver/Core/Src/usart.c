@@ -99,9 +99,16 @@ uint8_t usart_read(USART_TypeDef *usart) {
 
 // USART Interrupts Helper Functions
 void usart_enable_irq(USART_TypeDef *usart){
-    if(usart == USART1) {NVIC_EnableIRQ(USART1_IRQn);}
-    if(usart == USART2) {NVIC_EnableIRQ(USART2_IRQn);}
-    if(usart == USART3) {NVIC_EnableIRQ(USART3_IRQn);}
+    
+    if(usart == USART1) 
+        NVIC_EnableIRQ(USART1_IRQn);
+    
+    if(usart == USART2) 
+        NVIC_EnableIRQ(USART2_IRQn);
+    
+    if(usart == USART3) 
+        NVIC_EnableIRQ(USART3_IRQn);
+
 }
 
 void usart_enable_peie(USART_TypeDef *usart){usart->CR1 |= (1 << 8);}
