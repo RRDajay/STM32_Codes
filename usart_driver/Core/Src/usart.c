@@ -1,4 +1,5 @@
 #include "usart.h"
+#include "rcc.h"
 
 void usart_clock_enable(void) {
     // Enable USART clock
@@ -32,7 +33,7 @@ void usart_setup(USART_TypeDef *usart, int baudRate) {
 uint16_t fractional_baud_rate_generator(uint32_t baudRate) {
     
     double integer, fractional;
-    double temp = SystemCoreClock / (16U * (double)baudRate);
+    double temp = rcc_get_sysclk() / (16U * (double)baudRate);
 
     fractional = modf(temp, &integer);
     

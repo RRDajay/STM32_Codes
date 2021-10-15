@@ -39,6 +39,7 @@ Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/systick.c \
 Core/Src/usart.c \
+Core/Src/rcc.c \
 Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c 
 
 # ASM sources
@@ -163,8 +164,14 @@ $(BUILD_DIR):
 # clean up
 #######################################
 clean:
-	-rm -fR $(BUILD_DIR)
+	-rm -fR $(BUILD_DIR)	
 
+#######################################
+# flash
+#######################################
+
+flash: all
+	openocd -f interface/stlink-dap.cfg -f target/stm32f1x.cfg -c "program ${BUILD_DIR}/${TARGET}.elf verify reset exit"
   
 #######################################
 # dependencies

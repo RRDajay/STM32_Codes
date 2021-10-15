@@ -63,8 +63,8 @@ int main(void)
     /* Loop forever */
 	while(1) {
 		// usart_send_string(USART1, (uint8_t*)"Hello World");
-		usart_write(USART1, 'a');
-		uint8_t temp = usart_read(USART1);
+		usart_send_string(USART1, "Hello World!!!\n");
+		// uint8_t temp = usart_read(USART1);
 
 	}
 }
