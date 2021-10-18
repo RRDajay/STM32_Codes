@@ -1,4 +1,4 @@
-# STM32_Codes
+# driver codes
 
 Personal repo for STM32 firmware/driver development and experiments using embedded C. 
 
