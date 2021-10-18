@@ -66,19 +66,24 @@ int main(void)
 	// Configure PC13 as output
 	gpio_config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 	
-	uint32_t* address = 0x080003ff;
+	uint32_t address = 0x0801fc00;
+	uint8_t* data = "Hello World!!!!!!!!!!!";
 
     /* Loop forever */
 	while(1) {
 		gpio_pin_toggle(GPIOC, 13);
 
 		// flash_unlock();
-
-		uint32_t temp = flash_read(address);
-
-		address++;
-
 		__NOP();
+
+		flash_erase(0x0801fc04);
+
+		// if(*data)
+		// {
+		// 	flash_write(address, *((uint16_t*)data));
+		// 	address = address+2;
+		// 	data+=2;
+		// }
 
 		// flash_lock();
 	}
