@@ -9,6 +9,10 @@
 #define FLASH_KEY_2             (0xCDEF89ABUL)
 #define FLASH_PAGES             (128UL)
 
+
+void flash_enable_prefetch_buffer(void);
+
+// PEC
 void flash_unlock();
 void flash_lock();
 void flash_write(uint32_t address, uint16_t data);

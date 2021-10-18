@@ -87,5 +87,7 @@ void flash_erase(uint32_t address) {
 
     // Lock FLASH PEC
     flash_lock();
+
     // Read the erased page and verify
+    uint32_t temp = *((uint32_t*)address);
 }
