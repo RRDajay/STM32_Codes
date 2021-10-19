@@ -50,6 +50,7 @@ void initialize(void) {
 int main(void)
 {
 	
+	
 	initialize();
 
 	// Enable APB2 Clock PORTC
@@ -58,30 +59,13 @@ int main(void)
 	// Configure PC13 as output
 	gpio_config_output_pin(GPIOC, 13, OUTPUT_PP, S50);
 	
-	uint32_t address = 0x08002000;
-	uint32_t address2 = 0x08002000;
-	uint8_t* data = "Hello World";
 
     /* Loop forever */
 	while(1) {
 
 		gpio_pin_toggle(GPIOC, 13);
 
-		
-		if(*data)
-		{
-			flash_write(address, *((uint16_t*)data));
-			address = address+2;
-			data+=2;
-		}
-
-		else {
-			uint32_t* temp = flash_read(address2);
-			flash_erase(address2);
-			
-			address = 0x8002000;
-			data = "Hello World";
-		}
+		delay_ms(1000);
 
 	}
 }
