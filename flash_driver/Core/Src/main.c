@@ -4,14 +4,6 @@
 #include "systick.h"
 #include "stm32f1xx.h"
 
-void UsageFault_Handler(void) {
-	__NOP();
-}
-
-void WWDG_IRQHandler(void) {
-	__NOP();
-}
-
 void rcc_config(void) {
 
 	// Enable Prefetch buffer
@@ -68,17 +60,14 @@ int main(void)
 	
 	uint32_t address = 0x08002000;
 	uint32_t address2 = 0x08002000;
-	uint8_t* data = "Hello World!!!!!!!!!!!";
+	uint8_t* data = "Hello World";
 
     /* Loop forever */
 	while(1) {
+
 		gpio_pin_toggle(GPIOC, 13);
 
-		__NOP();
-
-		// flash_erase(address);
-
-		// address+=4;
+		
 		if(*data)
 		{
 			flash_write(address, *((uint16_t*)data));
@@ -87,7 +76,11 @@ int main(void)
 		}
 
 		else {
+			uint32_t temp = flash_read(address2);
 			flash_erase(address2);
+			
+			address = 0x8002000;
+			data = "Hello World";
 		}
 
 	}

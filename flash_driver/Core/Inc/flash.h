@@ -17,8 +17,7 @@ void flash_unlock();
 void flash_lock();
 void flash_write(uint32_t address, uint16_t data);
 void flash_erase(uint32_t address);
-uint32_t flash_read(uint32_t* address);
-
+uint32_t flash_read(uint32_t address);
 
 
 #endif // _FLASH_H_

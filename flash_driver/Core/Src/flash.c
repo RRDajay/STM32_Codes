@@ -53,8 +53,8 @@ void flash_write(uint32_t address, uint16_t data) {
     
 }
 
-uint32_t flash_read(uint32_t* address) {
-    return *address;
+uint32_t flash_read(uint32_t address) {
+    return *((uint32_t*)address);
 }
 
 void flash_erase(uint32_t address) {
@@ -89,5 +89,5 @@ void flash_erase(uint32_t address) {
     flash_lock();
 
     // Read the erased page and verify
-    uint32_t temp = *((uint32_t*)address);
+    // uint32_t temp = *((uint32_t*)address);
 }

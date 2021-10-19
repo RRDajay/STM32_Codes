@@ -17,7 +17,6 @@ Development Tools: VS Code, OpenOCD, GNU Make, ARM GCC Compiler, and ST-Link v2
 7. RCC Driver
 8. Flash Driver
 
-
 9. Custom Bootloader (in-progress)
 10. PWM Driver (in-progress)
 11. Timer Driver (in-progress)
