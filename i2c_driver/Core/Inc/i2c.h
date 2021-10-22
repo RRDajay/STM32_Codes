@@ -2,6 +2,7 @@
 #define _I2C_H_
 
 #include "stm32f1xx.h"
+#include "stdbool.h"
 
 /* From datasheet:
 
@@ -53,6 +54,11 @@ void i2c_send_address(I2C_TypeDef *i2cx, uint8_t address);
 void i2c_send_data(I2C_TypeDef *i2cx, uint8_t data);
 void i2c_stop(I2C_TypeDef *i2cx);
 
+void i2c_start_it(I2C_TypeDef *i2cx);
+void i2c_send_address_it(I2C_TypeDef *i2cx, uint8_t address);
+void i2c_send_data_it(I2C_TypeDef *i2cx, uint8_t data);
+void i2c_stop_it(I2C_TypeDef *i2cx);
+
 // I2C Interrupts
 void i2c_dmaen_enable(I2C_TypeDef *i2cx); // enable DMA requests
 void i2c_itbufen_enable(I2C_TypeDef *i2cx); // enable buffer interrupt
@@ -64,6 +70,6 @@ void i2c_itbufen_disable(I2C_TypeDef *i2cx); // disable buffer interrupt
 void i2c_itevten_disable(I2C_TypeDef *i2cx); // disable event interrupt
 void i2c_iterren_disable(I2C_TypeDef *i2cx); // disable error interrupt
 
-
+// bool i2c_
 
 #endif

@@ -47,39 +47,6 @@ void initialize(void) {
 	
 }
 
-void lcd_init(void) {
-
-	delay_ms(100);
-	i2c_start(I2C1);
-	i2c_send_address(I2C1, 0x27);
-
-	i2c_send_data(I2C1, 0x30);
-	delay_ms(5);
-
-	i2c_send_data(I2C1, 0x30);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x30);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x38);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x08);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x01);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x06);
-	delay_ms(1);
-
-	i2c_send_data(I2C1, 0x0E);
-	delay_ms(1);
-
-	i2c_stop(I2C1);
-}
-
 int main(void)
 {
 
@@ -88,31 +55,33 @@ int main(void)
 	// Enable APB2 Clock PORTC
 	rcc_iopb_clock_enable();
 	rcc_iopc_clock_enable();
-	rcc_i2c1_clock_enable();
+	
 
 	// Configure PC13 as output
 	gpio_config_output_pin(GPIOC, 13, OUTPUT_OD, S50);
 	
-	// I2C1 SCL pin
-	gpio_config_output_pin(GPIOB, 6, OUTPUT_AF_OD, S50); 
-	
-	// I2C1 SDA pin
-	gpio_config_output_pin(GPIOB, 7, OUTPUT_AF_OD, S50); 
-
+	// **************** I2C CONFIGURATION ******************** //
+	rcc_i2c1_clock_enable();	// enable i2c1 clock
+	gpio_config_output_pin(GPIOB, 6, OUTPUT_AF_OD, S50); // I2C1 SCL pin
+	gpio_config_output_pin(GPIOB, 7, OUTPUT_AF_OD, S50); // I2C1 SDA pin
 	uint32_t _apb1_clk = rcc_get_apb1_clk();
-
 	i2c_init(I2C1, I2C_SM_MODE, _apb1_clk);
+	NVIC_EnableIRQ(I2C1_EV_IRQn);
+	NVIC_EnableIRQ(I2C1_ER_IRQn);
+	i2c_itbufen_enable(I2C1);
+	i2c_itevten_enable(I2C1);
 	i2c_enable(I2C1);
+
+	// ****************************************************** //
 
 	__NOP();
 
-	lcd_init();
+	// lcd_init();
 	
+	i2c_start(I2C1);
 
     /* Loop forever */
 	while(1) {
-
-		__NOP();
 
 	}
 }

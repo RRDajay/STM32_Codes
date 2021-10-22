@@ -17,28 +17,29 @@ void i2c_start(I2C_TypeDef *i2cx) {
 }
 
 void i2c_send_address(I2C_TypeDef *i2cx, uint8_t address) {
-    // Check is SB bit is set
-    while(!(i2cx->SR1 & (1U << 0U)));
+
+    // // Check is SB bit is set
+    // while(!(i2cx->SR1 & (1U << 0U)));
 
     // Write address to data register
     i2cx->DR = address<<1;
 
-    // Check if address is sent
-    while(!(i2cx->SR1 & (1U << 1U))); 
+    // // Check if address is sent
+    // while(!(i2cx->SR1 & (1U << 1U))); 
 
     // Clear ADDR flag by reading SR1 and SR2
-    uint16_t temp = i2cx->SR1 | i2cx->SR2;
+    // uint16_t temp = i2cx->SR1 | i2cx->SR2;
 }
 
 void i2c_send_data(I2C_TypeDef *i2cx, uint8_t data) {
     // Check if data register is empty
-    while(!(i2cx->SR1 & (1U << 7U)));
+    // while(!(i2cx->SR1 & (1U << 7U)));
 
     // Write data to register
     i2cx->DR = data;
 
     // Check if BTF is set
-    while(!((i2cx->SR1 & (1U << 2U))));
+    // while(!((i2cx->SR1 & (1U << 2U))));
 }
 
 void i2c_stop(I2C_TypeDef *i2cx) {
@@ -92,3 +93,36 @@ void i2c_dmaen_disable(I2C_TypeDef *i2cx) {i2cx->CR2 &= ~(1U << 11U); } // disab
 void i2c_itbufen_disable(I2C_TypeDef *i2cx) {i2cx->CR2 &= ~(1U << 10U); } // disable buffer interrupts
 void i2c_itevten_disable(I2C_TypeDef *i2cx) {i2cx->CR2 &= ~(1U << 9U); } // disable event interrupts
 void i2c_iterren_disable(I2C_TypeDef *i2cx) {i2cx->CR2 &= ~(1U << 8U); } // disable error interrupts
+
+// I2C Check Flags
+
+// I2C Interrupt Handler
+
+void I2C1_EV_IRQHandler(void) {
+    
+    // Check if start bit is set
+    if(I2C1->SR1 & (1U << 0U)) {
+        i2c_send_address(I2C1, 0x27);
+    }
+
+    // Check if addr bit is set
+    if ((I2C1->SR1 & (1U << 1U))) {
+        uint16_t temp = I2C1->SR1 | I2C1->SR2;
+    }
+
+    // Check if txe bit is set
+    if(I2C1->SR1 & (1U << 7U)) {
+        i2c_send_data(I2C1, 0x00);
+    }
+
+    if((I2C1->SR1 & (1U << 2U))) {
+        i2c_stop(I2C1);
+    }
+}
+
+void I2C1_ER_IRQHandler(void) {
+    if((I2C1->SR1 & (1U << 10U))) {
+        i2c_stop(I2C1);
+        i2c_start(I2C1);
+    }
+}
