@@ -3,12 +3,53 @@
 void i2c_enable(I2C_TypeDef *i2cx){i2cx->CR1 |= (1U << 0U);}
 void i2c_disable(I2C_TypeDef *i2cx){i2cx->CR1 &= ~(1U << 0U);}
 
+void i2c_sw_reset(I2C_TypeDef *i2cx) {
+        i2cx->CR1 |= (1U << 15U);
+        i2cx->CR1 &= ~(1U << 15U);
+}
+
+void i2c_start(I2C_TypeDef *i2cx) {
+    // Acknowledge enable
+    i2cx->CR1 |= (1U << 10U);
+
+    // Generate Start
+    i2cx->CR1 |= (1U << 8U);
+}
+
+void i2c_send_address(I2C_TypeDef *i2cx, uint8_t address) {
+    // Check is SB bit is set
+    while(!(i2cx->SR1 & (1U << 0U)));
+
+    // Write address to data register
+    i2cx->DR = address<<1;
+
+    // Check if address is sent
+    while(!(i2cx->SR1 & (1U << 1U))); 
+
+    // Clear ADDR flag by reading SR1 and SR2
+    uint16_t temp = i2cx->SR1 | i2cx->SR2;
+}
+
+void i2c_send_data(I2C_TypeDef *i2cx, uint8_t data) {
+    // Check if data register is empty
+    while(!(i2cx->SR1 & (1U << 7U)));
+
+    // Write data to register
+    i2cx->DR = data;
+
+    // Check if BTF is set
+    while(!((i2cx->SR1 & (1U << 2U))));
+}
+
+void i2c_stop(I2C_TypeDef *i2cx) {
+    i2cx->CR1 |= (1U << 9U);
+}
+
 // I2C Clock Control Setup
 void i2c_init(I2C_TypeDef *i2cx, uint8_t i2c_mode, uint32_t _apb1_clk) {
 
     // I2C Reset
-    i2cx->CR1 |= (1U << 15U);
-    i2cx->CR1 &= ~(1U << 15U);
+    i2c_sw_reset(i2cx);
 
     // Gets the APB1 clock value used by the I2C registers
     uint32_t apb1_clk = _apb1_clk;
@@ -22,45 +63,17 @@ void i2c_init(I2C_TypeDef *i2cx, uint8_t i2c_mode, uint32_t _apb1_clk) {
 
     if (i2c_mode == I2C_SM_MODE) {
         
-        /* From datasheet:
-
-            STANDARD MODE:                                           
-            SDA and SCL rise time, T_r = 1000ns                      
-            SCL clock high time, T_w(sclh) = 4.0us                   
-
-            CCR = T_r + T_w / T_pclk1
-
-        */
-
         // Set I2C to standard mode
         i2cx->CCR &= ~(1U << 15U);
 
         // Calculate value for Clock Control Register
-        float ccr_value = (I2C_T_R_SM_MODE + I2C_T_W_SM_MODE) * _apb1_clk;
+        float ccr_value = (I2C_T_R_SM_MODE + I2C_T_W_SCLH_SM_MODE) * _apb1_clk;
         i2cx->CCR |= (uint16_t) ccr_value;
 
         uint8_t trise_value = (I2C_T_R_SM_MODE * _apb1_clk) + 1;
         i2cx->TRISE = (uint8_t) trise_value;
 
-        __NOP();
-   
     }
-
-    // // Set I2C to fast mode
-    // if (mode == I2C_FM_MODE) {
-
-        /* From datasheet:
-            FAST MODE:
-            SDA and SCL rise _ime, T_r = 300ns       
-            SCL clock high time, T_w(sclh) = 0.6us  
-        */
-
-        //     i2cx->CCR |= (1U << 15U);
-        
-    // }
-
-
-
 
 }
 
