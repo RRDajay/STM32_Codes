@@ -41,6 +41,7 @@ Core/Src/systick.c \
 Core/Src/usart.c \
 Core/Src/rcc.c \
 Core/Src/flash.c \
+Core/Src/i2c.c \
 Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c 
 
 # ASM sources
