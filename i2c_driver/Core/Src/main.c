@@ -47,6 +47,7 @@ void initialize(void) {
 	
 }
 
+
 int main(void)
 {
 
@@ -56,7 +57,6 @@ int main(void)
 	rcc_iopb_clock_enable();
 	rcc_iopc_clock_enable();
 	
-
 	// Configure PC13 as output
 	gpio_config_output_pin(GPIOC, 13, OUTPUT_OD, S50);
 	
@@ -66,22 +66,51 @@ int main(void)
 	gpio_config_output_pin(GPIOB, 7, OUTPUT_AF_OD, S50); // I2C1 SDA pin
 	uint32_t _apb1_clk = rcc_get_apb1_clk();
 	i2c_init(I2C1, I2C_SM_MODE, _apb1_clk);
-	NVIC_EnableIRQ(I2C1_EV_IRQn);
-	NVIC_EnableIRQ(I2C1_ER_IRQn);
 	i2c_itbufen_enable(I2C1);
 	i2c_itevten_enable(I2C1);
+	i2c_iterren_enable(I2C1);
+	i2c_set_data("Hello World");
+	uint8_t address = 0x08;
+	i2c_set_slave_address(address);
+	// NVIC_EnableIRQ(I2C1_EV_IRQn);
+	// NVIC_EnableIRQ(I2C1_ER_IRQn);
 	i2c_enable(I2C1);
 
 	// ****************************************************** //
 
+	// i2c_start_it(I2C1);
+
 	__NOP();
-
-	// lcd_init();
 	
-	i2c_start(I2C1);
-
     /* Loop forever */
 	while(1) {
+
+		__NOP();
+		
+		gpio_pin_toggle(GPIOC, 13);
+
+
+
+		// ****** I2C without interrupts ***** //
+
+		i2c_start(I2C1);
+		i2c_read(I2C1);
+		i2c_read_data(I2C1);
+		i2c_read_data(I2C1);
+		i2c_read_data(I2C1);
+		i2c_read_data(I2C1);
+
+		while(!i2c_btf(I2C1));
+		I2C1->CR1 &= ~(1U << 10U);
+		i2c_stop(I2C1);
+		
+		uint8_t temp5 = I2C1->DR;
+		uint8_t temp6 = I2C1->DR;
+
+
+		delay_ms(10);
+
+		// *********************************** // 
 
 	}
 }

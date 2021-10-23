@@ -41,6 +41,10 @@
 #define I2C_SCL_FREQ_50KHZ      0x0168U
 #define I2C_SCL_FREQ_20KHZ      0x0384U
 
+void i2c_set_data(uint8_t* _data);
+void i2c_set_slave_address(uint8_t _address);
+uint8_t i2c_get_receive_buffer();
+
 // I2C Control Registers
 void i2c_init(I2C_TypeDef *i2cx, uint8_t i2c_mode, uint32_t _apb1_clk);
 void i2c_enable(I2C_TypeDef *i2cx);
@@ -49,14 +53,17 @@ void i2c_sw_reset(I2C_TypeDef *i2cx);
 void i2c_dma_last_transfer(I2C_TypeDef *i2cx); // next DMA eot is the last transfer
 void i2c_dma_not_last_transfer(I2C_TypeDef *i2cx); // next DMA eot is not the last transfer
 
+// I2C Communication Flow Helper Functions
 void i2c_start(I2C_TypeDef *i2cx);
-void i2c_send_address(I2C_TypeDef *i2cx, uint8_t address);
-void i2c_send_data(I2C_TypeDef *i2cx, uint8_t data);
+void i2c_write(I2C_TypeDef *i2cx);
+void i2c_read(I2C_TypeDef *i2cx);
+void i2c_read_data(I2C_TypeDef *i2cx);
+void i2c_send_data(I2C_TypeDef *i2cx);
 void i2c_stop(I2C_TypeDef *i2cx);
 
 void i2c_start_it(I2C_TypeDef *i2cx);
-void i2c_send_address_it(I2C_TypeDef *i2cx, uint8_t address);
-void i2c_send_data_it(I2C_TypeDef *i2cx, uint8_t data);
+void i2c_write_it(I2C_TypeDef *i2cx);
+void i2c_send_data_it(I2C_TypeDef *i2cx);
 void i2c_stop_it(I2C_TypeDef *i2cx);
 
 // I2C Interrupts
@@ -70,6 +77,12 @@ void i2c_itbufen_disable(I2C_TypeDef *i2cx); // disable buffer interrupt
 void i2c_itevten_disable(I2C_TypeDef *i2cx); // disable event interrupt
 void i2c_iterren_disable(I2C_TypeDef *i2cx); // disable error interrupt
 
-// bool i2c_
+// I2C Check Flags
+bool i2c_sb(I2C_TypeDef *i2cx);
+bool i2c_addr(I2C_TypeDef *i2cx);
+bool i2c_btf(I2C_TypeDef *i2cx);
+bool i2c_rxne(I2C_TypeDef *i2cx);
+bool i2c_txe(I2C_TypeDef *i2cx);
+bool i2c_af(I2C_TypeDef *i2cx);
 
 #endif
