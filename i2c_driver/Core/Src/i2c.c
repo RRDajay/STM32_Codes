@@ -187,10 +187,10 @@ void I2C1_EV_IRQHandler(void) {
         
         i2c_read_data_it(I2C1);
 
-        while(!i2c_btf(I2C1)) {
+        if(i2c_btf(I2C1)) {
             I2C1->CR1 &= ~(1U << 10U);
-            uint8_t temp5 = I2C1->DR;
             i2c_stop_it(I2C1);
+            uint8_t temp5 = I2C1->DR;
             uint8_t temp6 = I2C1->DR;
         }
     }

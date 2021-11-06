@@ -4,6 +4,7 @@
 #include "systick.h"
 #include "i2c.h"
 
+
 void rcc_config(void) {
 
 	// Enable Prefetch buffer
@@ -81,6 +82,8 @@ int main(void)
 	// i2c_start_it(I2C1);
 
 	__NOP();
+
+
 	
     /* Loop forever */
 	while(1) {
@@ -89,26 +92,27 @@ int main(void)
 		
 		gpio_pin_toggle(GPIOC, 13);
 
+		delay_ms(1000);
+
 
 
 		// ****** I2C without interrupts ***** //
 
-		i2c_start(I2C1);
-		i2c_read(I2C1);
-		i2c_read_data(I2C1);
-		i2c_read_data(I2C1);
-		i2c_read_data(I2C1);
-		i2c_read_data(I2C1);
+		// i2c_start(I2C1);
+		// i2c_read(I2C1);
+		// i2c_read_data(I2C1);
+		// i2c_read_data(I2C1);
+		// i2c_read_data(I2C1);
+		// i2c_read_data(I2C1);
 
-		while(!i2c_btf(I2C1));
-		I2C1->CR1 &= ~(1U << 10U);
-		i2c_stop(I2C1);
+		// while(!i2c_btf(I2C1));
+		// I2C1->CR1 &= ~(1U << 10U);
+		// i2c_stop(I2C1);
 		
-		uint8_t temp5 = I2C1->DR;
-		uint8_t temp6 = I2C1->DR;
+		// uint8_t temp5 = I2C1->DR;
+		// uint8_t temp6 = I2C1->DR;
 
-
-		delay_ms(10);
+		// delay_ms(10);
 
 		// *********************************** // 
 

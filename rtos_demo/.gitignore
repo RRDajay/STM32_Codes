@@ -1,0 +1,9 @@
+/build
+/.vscode
+/Drivers/CMSIS/Core_A/
+/Drivers/CMSIS/DSP/
+/Drivers/CMSIS/NN/
+/Drivers/CMSIS/RTOS/
+/Drivers/CMSIS/RTOS2/
+debug.cfg
+*.svd
