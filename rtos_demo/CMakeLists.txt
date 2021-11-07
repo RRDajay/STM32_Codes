@@ -36,17 +36,17 @@ set(PROJECT_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Core/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Inc
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Include
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Include
     )
 
 # Source Directories
 file(GLOB_RECURSE PROJECT_SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F1xx/Source/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Src/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/MemMang/heap_4.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Src/*.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3/*.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/MemMang/heap_4.c
     )
 
 # Executable Files
@@ -57,7 +57,10 @@ add_executable(${EXECUTABLE}
 # Embedded Macros
 target_compile_definitions(${EXECUTABLE} PRIVATE 
     STM32F103xB
-    __RTOS__
+    # __RTOS__
+    # __TASKS_DEMO__
+    # __QUEUE_DEMO__
+    # __SEMIHOSTING__
     )
 
 # Add header directories to target
