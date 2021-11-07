@@ -16,11 +16,13 @@ Development Tools: VS Code, OpenOCD, GNU Make, ARM GCC Compiler, and ST-Link v2
 6. USART Driver
 7. RCC Driver
 8. Flash Driver
+9. I2C Driver
+10. FreeRtos Demo - (This was built using CMake and Ninja)
 
-9. Custom Bootloader (in-progress)
-10. PWM Driver (in-progress)
-11. Timer Driver (in-progress)
-12. DMA Driver (in-progress) 
-13. In Application Programming Demo (in-progress)
+11. Custom Bootloader (in-progress)
+12. PWM Driver (in-progress)
+13. Timer Driver (in-progress)
+14. DMA Driver (in-progress) 
+15. In Application Programming Demo (in-progress)
 
 
