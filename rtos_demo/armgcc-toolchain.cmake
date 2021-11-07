@@ -3,12 +3,16 @@ set(CMAKE_SYSTEM_PROCESSOR ARM)
 
 # Some default GCC settings
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
+
 # set(FLAGS
 #     "-fdata-sections -ffunction-sections \
 #     --specs=nano.specs -Wl,--gc-sections")
 # set(CPP_FLAGS
 #     "-fno-rtti -fno-exceptions \
 #     -fno-threadsafe-statics")
+
+SET (CMAKE_C_COMPILER_WORKS 1)
+SET (CMAKE_CXX_COMPILER_WORKS 1)
 
 set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc ${FLAGS})
 set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})

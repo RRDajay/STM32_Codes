@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.10.0)
 
 # Project Setup and Definitions
+# SET (CMAKE_C_COMPILER_WORKS 1)
+# SET (CMAKE_CXX_COMPILER_WORKS 1)
+# set(CMAKE_EXECUTABLE_SUFFIX_ASM ".elf")
+# set(CMAKE_EXECUTABLE_SUFFIX_C ".elf")
+# set(CMAKE_EXECUTABLE_SUFFIX_CXX ".elf")
+
 project(rtos-demo-stm32-bluepill)
+
 set(MCU_FLAGS 
     -mcpu=cortex-m3
     -mthumb)
@@ -9,6 +16,7 @@ set(MCU_FLAGS
 set(EXECUTABLE ${CMAKE_PROJECT_NAME})
 
 enable_language(C CXX ASM)
+
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
