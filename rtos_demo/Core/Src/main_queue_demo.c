@@ -21,7 +21,6 @@ void vApplicationIdleHook(void);
 void myTask1 (void *pvParameters);
 void myTask2 (void *pvParameters);
 
-
 #endif
 
 #if __SEMIHOSTING__
@@ -69,14 +68,17 @@ int main_queue(void)
 	// Create Tasks
 	xTaskCreate(myTask1, "task1", 128, NULL, tskIDLE_PRIORITY+1, NULL);
 	xTaskCreate(myTask2, "task2", 128, NULL, tskIDLE_PRIORITY+2, NULL);
+
+	// Create Queue
+	
 	// Start Scheduler
 	vTaskStartScheduler();
 	
 #endif
 
     /* Loop forever */
-	while(1) {
 #if !(defined(__RTOS__))
+	while(1) {
 
 #if __SEMIHOSTING__
 		printf("Hello World\n");
@@ -85,8 +87,8 @@ int main_queue(void)
 		gpio_pin_toggle(GPIOC, 13);
 		delay_ms(1000);
 
-#endif
 	}
+#endif
 
 }
 
@@ -97,7 +99,6 @@ void myTask1 (void *pvParameters) {
 	for(;;) { 
 		gpio_pin_toggle(GPIOC, 13);
 		vTaskDelay(500);
-		usart_send_string(USART1, "Hello from task 1!\n");
 	}
 }
 
@@ -107,6 +108,7 @@ void myTask2 (void *pvParameters) {
 		vTaskDelay(150);
 	}
 }
+
 // Increment ulIdleCycleCount during idle time 
 void vApplicationIdleHook(void) {
 

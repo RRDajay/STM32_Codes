@@ -42,8 +42,8 @@ int main() {
 		gpio_pin_toggle(GPIOC, 13);
 		delay_ms(1000);
 
-#endif
 	}
+#endif
 }
 
 void clkInit(void) {
@@ -90,5 +90,5 @@ void clkInit(void) {
 
 void ledBlink(void) {
 	volatile uint8_t x = usart_read_IT(USART1);
-	usart_send_string(USART1, "Hello World\n");
+	usart_send_string(USART1, "Hello from ISR\n");
 }

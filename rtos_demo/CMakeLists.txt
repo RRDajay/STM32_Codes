@@ -1,12 +1,4 @@
 cmake_minimum_required(VERSION 3.10.0)
-
-# Project Setup and Definitions
-# SET (CMAKE_C_COMPILER_WORKS 1)
-# SET (CMAKE_CXX_COMPILER_WORKS 1)
-# set(CMAKE_EXECUTABLE_SUFFIX_ASM ".elf")
-# set(CMAKE_EXECUTABLE_SUFFIX_C ".elf")
-# set(CMAKE_EXECUTABLE_SUFFIX_CXX ".elf")
-
 project(rtos-demo-stm32-bluepill)
 
 set(MCU_FLAGS 
@@ -36,17 +28,17 @@ set(PROJECT_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Core/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Inc
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Include
     )
 
 # Source Directories
 file(GLOB_RECURSE PROJECT_SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F1xx/Source/*.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Src/*.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3/*.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/MemMang/heap_4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/Src/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/ARM_CM3/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/MemMang/heap_4.c
     )
 
 # Executable Files
@@ -57,9 +49,9 @@ add_executable(${EXECUTABLE}
 # Embedded Macros
 target_compile_definitions(${EXECUTABLE} PRIVATE 
     STM32F103xB
-    # __RTOS__
+    __RTOS__
     # __TASKS_DEMO__
-    # __QUEUE_DEMO__
+    __QUEUE_DEMO__
     # __SEMIHOSTING__
     )
 
