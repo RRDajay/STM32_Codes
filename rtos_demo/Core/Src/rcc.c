@@ -3,7 +3,6 @@
 // Clock Getter Helper Functions
 
 uint32_t rcc_get_ppre1_prescaler(void) {
-
   uint32_t temp = RCC->CFGR & (7U << 8U);
 
   if (temp == PPRE1_DIV_2)
@@ -20,7 +19,6 @@ uint32_t rcc_get_ppre1_prescaler(void) {
 }
 
 uint32_t rcc_get_ppre2_prescaler(void) {
-
   uint32_t temp = RCC->CFGR & (7U << 11U);
 
   if (temp == PPRE2_DIV_2)
@@ -61,14 +59,12 @@ uint32_t rcc_get_ahb_prescaler(void) {
 }
 
 uint32_t rcc_get_sysclk(void) {
-
   SystemCoreClockUpdate();
 
   return SystemCoreClock;
 }
 
 uint32_t rcc_get_apb2_clk(void) {
-
   uint32_t sys_clk = rcc_get_sysclk();
 
   // Get AHB Prescaler
@@ -81,7 +77,6 @@ uint32_t rcc_get_apb2_clk(void) {
 }
 
 uint32_t rcc_get_apb1_clk(void) {
-
   uint32_t sys_clk = rcc_get_sysclk();
 
   // Get AHB Prescaler
@@ -125,7 +120,6 @@ uint8_t rcc_get_hsical(void) { return RCC->CR & (0xFF << 8U); }
 // HSITRIM
 uint8_t rcc_get_hsitrim(void) { return RCC->CR & (0x1F << 3U); }
 void rcc_set_hsitrim(uint8_t val) {
-
   if (val > 31)
     RCC->CR = 31;
   else
@@ -143,7 +137,6 @@ void rcc_hsi_disable(void) { RCC->CR &= ~(1U << 0U); }
 
 // RCC CFGR Reg Helper Functions
 void rcc_set_mco(uint32_t val) {
-
   RCC->CFGR &= ~(7U << 24U); // Reset Register, No Clock selected
 
   if (val == MCO_SYSCLK)
@@ -157,7 +150,6 @@ void rcc_set_mco(uint32_t val) {
 }
 
 void rcc_set_ppre2_prescaler(uint32_t val) {
-
   RCC->CFGR &= ~(7U << 11U); // Reset Register. HCLK not divided
 
   if (val == DIV_2)
@@ -171,7 +163,6 @@ void rcc_set_ppre2_prescaler(uint32_t val) {
 }
 
 void rcc_set_ppre1_prescaler(uint32_t val) {
-
   RCC->CFGR &= ~(7U << 8U); // Reset Register, HCLK not divided
 
   if (val == DIV_2)
@@ -185,7 +176,6 @@ void rcc_set_ppre1_prescaler(uint32_t val) {
 }
 
 void rcc_set_ahb_prescaler(uint32_t val) {
-
   RCC->CFGR &= ~(15U << 4U); // Reset Register, Sysclock not divided
 
   if (val == DIV_2)
@@ -207,7 +197,6 @@ void rcc_set_ahb_prescaler(uint32_t val) {
 }
 
 void rcc_set_adc_prescaler(uint32_t val) {
-
   RCC->CFGR &= ~(3U << 14U); // Reset Register, defaults to PCLK divided by 2
 
   if (val == DIV_2)
@@ -221,7 +210,6 @@ void rcc_set_adc_prescaler(uint32_t val) {
 }
 
 void rcc_set_pllmul(uint32_t val) {
-
   RCC->CFGR &= ~(15U << 18U);
 
   if (val == PLLMUL_2)
@@ -259,7 +247,6 @@ void rcc_set_pllmul(uint32_t val) {
 }
 
 void rcc_set_usb_prescaler(uint32_t val) {
-
   RCC->CFGR &= ~(1U << 22U);
 
   if (val == USB_PLL_0)
@@ -269,7 +256,6 @@ void rcc_set_usb_prescaler(uint32_t val) {
 }
 
 void rcc_set_pllxtpre(uint32_t val) {
-
   RCC->CFGR &= (1U << 17U);
 
   if (val == HSE_CLK_NO_DIV)
@@ -279,7 +265,6 @@ void rcc_set_pllxtpre(uint32_t val) {
 }
 
 void rcc_set_pllsrc(uint32_t val) {
-
   RCC->CFGR &= ~(1U << 16U); // Reset CFGR Register
 
   if (val == HSI_CLK_DIV_2)
@@ -291,7 +276,6 @@ void rcc_set_pllsrc(uint32_t val) {
 uint32_t rcc_get_sws(void) { return RCC->CFGR & (3U << 2U); }
 
 void rcc_set_sysclk(uint32_t val) {
-
   RCC->CFGR &= ~(3U); // Reset SW Register
 
   if (val == HSI_CLK) {

@@ -40,7 +40,6 @@ extern void ledBlink(void);
 extern void (*usart1_handler)(void);
 
 int main_queue(void) {
-
   // Initializes RCC and FLASH prebuffer
   clkInit();
 
@@ -49,8 +48,10 @@ int main_queue(void) {
   rcc_usart1_clock_enable();
   rcc_iopa_clock_enable();
 
-  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD, S50); // Configure PC13 as output
-  gpio_config_output_pin(GPIOC, 15, OUTPUT_OD, S50); // Configure PC15 as output
+  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD,
+                         S50); // Configure PC13 as output
+  gpio_config_output_pin(GPIOC, 15, OUTPUT_OD,
+                         S50); // Configure PC15 as output
 
   // Configure TX/RX Pins
   gpio_config_output_pin(GPIOA, 9, OUTPUT_AF_PP, S50);
@@ -82,7 +83,6 @@ int main_queue(void) {
   /* Loop forever */
 #if !(defined(__RTOS__))
   while (1) {
-
 #if __SEMIHOSTING__
     printf("Hello World\n");
 #endif
@@ -104,11 +104,9 @@ void myTask1(void *pvParameters) {
 }
 
 void printMessages(void *pvParameters) {
-
   int item;
 
   for (;;) {
-
     if (xQueueReceive(msg_queue, (void *)&item, 0) == pdTRUE)
       __NOP();
   }

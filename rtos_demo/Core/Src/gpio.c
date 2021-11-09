@@ -171,7 +171,6 @@ void gpio_pin_reset(GPIO_TypeDef *port, uint8_t pinNumber) {
 }
 
 void gpio_pin_set(GPIO_TypeDef *port, uint8_t pinNumber) {
-
   // Clear BRy Bit
   port->BSRR &= ~(1 << (pinNumber + 16));
 
@@ -180,13 +179,11 @@ void gpio_pin_set(GPIO_TypeDef *port, uint8_t pinNumber) {
 }
 
 void gpio_pin_toggle(GPIO_TypeDef *port, uint8_t pinNumber) {
-
   // toggles the output data register
   port->ODR ^= (1 << pinNumber);
 }
 
 bool gpio_pin_read(GPIO_TypeDef *port, uint8_t pinNumber) {
-
   // put the value of IDR in temp
   uint16_t temp = port->IDR;
 

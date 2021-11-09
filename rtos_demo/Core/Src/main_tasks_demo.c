@@ -34,7 +34,6 @@ extern void ledBlink(void);
 extern void (*usart1_handler)(void);
 
 int main_tasks(void) {
-
   clkInit();
 
   // Enable apb2 clock for portc and usart1
@@ -42,8 +41,10 @@ int main_tasks(void) {
   rcc_usart1_clock_enable();
   rcc_iopa_clock_enable();
 
-  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD, S50); // Configure PC13 as output
-  gpio_config_output_pin(GPIOC, 15, OUTPUT_OD, S50); // Configure PC15 as output
+  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD,
+                         S50); // Configure PC13 as output
+  gpio_config_output_pin(GPIOC, 15, OUTPUT_OD,
+                         S50); // Configure PC15 as output
 
   // Configure TX/RX Pins
   gpio_config_output_pin(GPIOA, 9, OUTPUT_AF_PP, S50);
@@ -111,7 +112,6 @@ void myTask3(void *pvParameters) {
 
 void myTask4(void *pvParameters) {
   for (;;) {
-
     vTaskDelay(100);
   }
 }

@@ -9,7 +9,6 @@ void i2c_set_slave_address(uint8_t _address) { address = _address; }
 
 // I2C Clock Control Setup
 void i2c_init(I2C_TypeDef *i2cx, uint8_t i2c_mode, uint32_t _apb1_clk) {
-
   // I2C Reset
   i2c_sw_reset(i2cx);
 
@@ -25,7 +24,6 @@ void i2c_init(I2C_TypeDef *i2cx, uint8_t i2c_mode, uint32_t _apb1_clk) {
   i2cx->CR2 |= (apb1_clk << 0U);
 
   if (i2c_mode == I2C_SM_MODE) {
-
     // Set I2C to standard mode
     i2cx->CCR &= ~(1U << 15U);
 
@@ -59,7 +57,6 @@ void i2c_start(I2C_TypeDef *i2cx) {
   i2cx->CR1 |= (1U << 8U);
 }
 void i2c_write(I2C_TypeDef *i2cx) {
-
   // // Check is SB bit is set
   while (!i2c_sb(i2cx))
     ;
@@ -75,7 +72,6 @@ void i2c_write(I2C_TypeDef *i2cx) {
   uint16_t temp = i2cx->SR1 | i2cx->SR2;
 }
 void i2c_read(I2C_TypeDef *i2cx) {
-
   // // Check is SB bit is set
   while (!i2c_sb(i2cx))
     ;
@@ -91,7 +87,6 @@ void i2c_read(I2C_TypeDef *i2cx) {
   uint16_t temp = i2cx->SR1 | i2cx->SR2;
 }
 void i2c_read_data(I2C_TypeDef *i2cx) {
-
   // Check if receive data register is not empty
   while (!(i2c_rxne(i2cx)))
     ;
@@ -177,7 +172,6 @@ bool i2c_af(I2C_TypeDef *i2cx) {
 // I2C Interrupt Handler
 
 void I2C1_EV_IRQHandler(void) {
-
   // Check if btf bit is set
   // if(i2c_btf(I2C1)) {
 
@@ -218,7 +212,6 @@ void I2C1_EV_IRQHandler(void) {
 
   // Check if rxne is set
   if (i2c_rxne(I2C1)) {
-
     i2c_read_data_it(I2C1);
 
     if (i2c_btf(I2C1)) {
@@ -231,7 +224,6 @@ void I2C1_EV_IRQHandler(void) {
 }
 
 void I2C1_ER_IRQHandler(void) {
-
   // Check if acknowledge failure
   if (i2c_af(I2C1)) {
     i2c_stop_it(I2C1);

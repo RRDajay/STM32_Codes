@@ -4,6 +4,14 @@
 #include "stm32f1xx.h"
 #include "usart.h"
 
+#if defined(__RTOS__)
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "task.h"
+#else
+#include "systick.h"
+#endif
+
 void clkInit(void);
 void ledBlink(void);
 
@@ -31,10 +39,10 @@ int main() {
 
   // Initialize GPIOC clock and pin 13 as output
   rcc_iopc_clock_enable();
-  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD, S50); // Configure PC13 as output
+  gpio_config_output_pin(GPIOC, 13, OUTPUT_OD,
+                         S50); // Configure PC13 as output
 
   while (1) {
-
     // usart_send_string(USART1, "Hello World\n");
 #if __SEMIHOSTING__
     printf("Hello World\n");
@@ -46,7 +54,6 @@ int main() {
 }
 
 void clkInit(void) {
-
   //	**********	RCC Configuration	**********	//
 
   // Enable Prefetch buffer

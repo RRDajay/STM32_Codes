@@ -5,12 +5,12 @@ TARGET = rtos-demo-stm32-bluepill
 BUILD_DIR = build
 
 all:
-	cd ${BUILD_DIR} && ninja && cd ..
+	cd ${BUILD_DIR} && scan-build ninja && cd ..
 
 cmake:
-	cmake --no-warn-unused-cli \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
+		cmake --no-warn-unused-cli \
 		-DCMAKE_TOOLCHAIN_FILE:FILEPATH=armgcc-toolchain.cmake \
+		-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
 		-DCMAKE_BUILD_TYPE:STRING=Debug \
 		-DCMAKE_C_COMPILER:FILEPATH=/usr/bin/arm-none-eabi-gcc-11.2.0 \
 		-Bbuild \

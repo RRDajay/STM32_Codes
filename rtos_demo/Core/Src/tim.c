@@ -3,7 +3,6 @@
 void tim_counter_setup(TIM_TypeDef *timx, TIM_COUNTMODE timCountMode,
                        uint16_t prescalerValue, uint16_t autoReloadValue,
                        bool autoReload) {
-
   // Set Counter Direction
   if (timCountMode == UPCOUNTER)
     timx->CR1 |= (0U << 0U);

@@ -2,7 +2,6 @@
 
 void flash_enable_prefetch_buffer(void) { FLASH->ACR |= (0x1UL << 4U) | 2U; }
 void flash_unlock() {
-
   // Check if flash is locked
   if ((FLASH->CR & (1U << 7U))) {
     // Write first flash key
@@ -18,7 +17,6 @@ void flash_unlock() {
 }
 
 void flash_lock() {
-
   // Check if flash is unlocked
   if (!(FLASH->CR & (1U << 7U))) {
     FLASH->CR |= (1U << 7U);
@@ -28,7 +26,6 @@ void flash_lock() {
 }
 
 void flash_write(uint32_t address, uint16_t data) {
-
   if (FLASH->SR & (1U << 0U))
     return;
 
@@ -58,7 +55,6 @@ void flash_write(uint32_t address, uint16_t data) {
 uint32_t *flash_read(uint32_t address) { return (uint32_t *)address; }
 
 void flash_erase(uint32_t address) {
-
   // Check that no FLASH memory operation is ongoing by checking the BSY bit in
   // the FLASH_CR register
   if (FLASH->SR & (1U << 0U))

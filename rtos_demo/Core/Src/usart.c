@@ -16,7 +16,6 @@ void usart_enable(USART_TypeDef *usart) {
 }
 
 void usart_setup(USART_TypeDef *usart, int baudRate) {
-
   // default configurations
   // 1 start bit, 8 data bits, 1 stop bit
 
@@ -31,7 +30,6 @@ void usart_setup(USART_TypeDef *usart, int baudRate) {
 }
 
 uint16_t fractional_baud_rate_generator(uint32_t baudRate) {
-
   SystemCoreClockUpdate();
 
   double integer, fractional;
@@ -44,7 +42,6 @@ uint16_t fractional_baud_rate_generator(uint32_t baudRate) {
 
 // USART status register helper functions
 bool check_status_register(USART_TypeDef *usart, unsigned int pos) {
-
   if (((usart->SR & (1U << pos)) >> pos) == 1) {
     return true;
   }
@@ -79,7 +76,6 @@ bool usart_parity_error_flag(USART_TypeDef *usart) {
 
 // USART Data Register Helper Functions
 void usart_write(USART_TypeDef *usart, uint8_t data) {
-
   // Check if USART data register is empty
   while (!(usart_transmit_register_empty_flag(usart)))
     ;
@@ -93,7 +89,6 @@ void usart_write(USART_TypeDef *usart, uint8_t data) {
 }
 
 void usart_write_IT(USART_TypeDef *usart, uint8_t data) {
-
   // Check if USART data register is empty
   // while(!(usart_transmit_register_empty_flag(usart)));
 
@@ -105,10 +100,8 @@ void usart_write_IT(USART_TypeDef *usart, uint8_t data) {
 }
 
 void usart_send_string(USART_TypeDef *usart, uint8_t *data) {
-
   // Check if dereferenced data is not null pointer
   while (*data) {
-
     // Characters in the array are written to the data register one by one
     usart_write(usart, *data);
 
@@ -118,7 +111,6 @@ void usart_send_string(USART_TypeDef *usart, uint8_t *data) {
 }
 
 uint8_t usart_read(USART_TypeDef *usart) {
-
   while (!(usart_read_data_register_not_empty_flag(usart)))
     ;
 
@@ -128,7 +120,6 @@ uint8_t usart_read(USART_TypeDef *usart) {
 }
 
 uint8_t usart_read_IT(USART_TypeDef *usart) {
-
   // while(!(usart_read_data_register_not_empty_flag(usart)));
 
   volatile uint8_t temp = usart->DR;
@@ -138,7 +129,6 @@ uint8_t usart_read_IT(USART_TypeDef *usart) {
 
 // USART Interrupts Helper Functions
 void usart_enable_irq(USART_TypeDef *usart) {
-
   if (usart == USART1)
     NVIC_EnableIRQ(USART1_IRQn);
   if (usart == USART2)
@@ -154,7 +144,6 @@ void usart_enable_rxneie(USART_TypeDef *usart) { usart->CR1 |= (1U << 5U); }
 void usart_enable_idleie(USART_TypeDef *usart) { usart->CR1 |= (1U << 4U); }
 
 void usart_disable_irq(USART_TypeDef *usart) {
-
   if (usart == USART1)
     NVIC_DisableIRQ(USART1_IRQn);
   if (usart == USART2)
@@ -174,7 +163,6 @@ void (*usart2_handler)(void);
 void (*usart3_handler)(void);
 // Interrupt Handlers
 void USART1_IRQHandler(void) {
-
   if (usart1_handler) {
     usart1_handler();
   }
