@@ -1,10 +1,10 @@
-#ifndef USART_H 
+#ifndef USART_H
 #define USART_H
 
-#include "stm32f1xx.h"
 #include "math.h"
-#include "stdint.h"
 #include "stdbool.h"
+#include "stdint.h"
+#include "stm32f1xx.h"
 
 // USART Configuration Register Helper Functions
 void usart_setup(USART_TypeDef *usart, int baudRate);
@@ -23,7 +23,7 @@ bool usart_framing_error_flag(USART_TypeDef *usart);
 bool usart_parity_error_flag(USART_TypeDef *usart);
 
 // USART Data Register Helper Functions
-void usart_send_string(USART_TypeDef *usart, uint8_t* data);
+void usart_send_string(USART_TypeDef *usart, uint8_t *data);
 void usart_write(USART_TypeDef *usart, uint8_t data);
 void usart_write_IT(USART_TypeDef *usart, uint8_t data);
 uint8_t usart_read(USART_TypeDef *usart);
@@ -45,4 +45,3 @@ void usart_disable_rxneie(USART_TypeDef *usart);
 void usart_disable_idleie(USART_TypeDef *usart);
 
 #endif
-

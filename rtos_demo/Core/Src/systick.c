@@ -5,23 +5,22 @@ volatile uint32_t tickCount = 0;
 
 void systick_init(void) {
 
-	SystemCoreClockUpdate();
+  SystemCoreClockUpdate();
 
-	// Configure 1ms interrupt
-	SysTick_Config(SystemCoreClock / 1000);
+  // Configure 1ms interrupt
+  SysTick_Config(SystemCoreClock / 1000);
 }
 
-void SysTick_Handler(void) {
-	tickCount++;
-}
+void SysTick_Handler(void) { tickCount++; }
 
-void delay_ms(uint32_t desiredTick){
-	
-	volatile uint32_t start = tickCount;
+void delay_ms(uint32_t desiredTick) {
 
-	while((tickCount - start) < desiredTick);
+  volatile uint32_t start = tickCount;
 
-	tickCount = 0;
+  while ((tickCount - start) < desiredTick)
+    ;
+
+  tickCount = 0;
 }
 
 #endif

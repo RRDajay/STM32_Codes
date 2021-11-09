@@ -6,7 +6,6 @@ set(MCU_FLAGS
     -mthumb)
 
 set(EXECUTABLE ${CMAKE_PROJECT_NAME})
-
 enable_language(C CXX ASM)
 
 set(CMAKE_C_STANDARD 99)
@@ -64,9 +63,9 @@ target_compile_options(${EXECUTABLE} PRIVATE
     ${MCU_FLAGS}
     -fdata-sections 
     -ffunction-sections
-    -Wall
-    -Wextra
-    -Wpedantic
+    # -Wall
+    # -Wextra
+    # -Wpedantic
     # -Wno-unused-parameter
     # -MMD
     # -MP
