@@ -11,14 +11,14 @@ enable_language(C CXX ASM)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-# MCU Startup Code Directories
+# MCU Startup Code 
 set(STARTUP_CODE  ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/startup_stm32f103xb.s)
 
-# MCU Linker Script Directories
+# MCU Linker Script
 set(LINKER_SCRIPT  ${CMAKE_CURRENT_SOURCE_DIR}/Core/Script/STM32F103C8Tx_FLASH.ld)
 
 # Header Directories

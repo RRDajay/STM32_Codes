@@ -5,7 +5,8 @@ TARGET = rtos-demo-stm32-bluepill
 BUILD_DIR = build
 
 all:
-	cd ${BUILD_DIR} && scan-build ninja && cd ..
+	make format \
+	&& cd ${BUILD_DIR} && make && cd ..
 
 cmake:
 		cmake --no-warn-unused-cli \
@@ -19,5 +20,11 @@ cmake:
 flash:
 	openocd -f interface/stlink-dap.cfg -f target/stm32f1x.cfg -c "program ${BUILD_DIR}/${TARGET}.elf verify reset exit"
 
+format:
+	clang-format -i -style=LLVM Core/Src/*.c Core/Inc/*.h 
+
 clean:
 	-rm -fR ${BUILD_DIR}
+
+ser:
+	sudo minicom -D /dev/ttyUSB0 -b 115200

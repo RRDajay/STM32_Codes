@@ -13,7 +13,7 @@
 #endif
 
 void clkInit(void);
-void ledBlink(void);
+void resetCtrl(void);
 
 #ifdef __TASKS_DEMO__
 extern void main_tasks();
@@ -93,7 +93,9 @@ void clkInit(void) {
 #endif
 }
 
-void ledBlink(void) {
-  volatile uint8_t x = usart_read_IT(USART1);
-  usart_send_string(USART1, "Hello from ISR\n");
+void resetCtrl(void) {
+  usart_send_string(USART1, "\n\t****MICROCONTROLLER RESET!!****\t\n");
+  for (uint32_t i = 0; i < 10000000; i++)
+    __NOP();
+  NVIC_SystemReset();
 }

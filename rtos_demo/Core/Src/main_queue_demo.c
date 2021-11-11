@@ -14,18 +14,17 @@
 
 #if defined(__RTOS__) && defined(__QUEUE_DEMO__)
 
-// Variable Declaration
-static volatile uint32_t
-    ul_idle_cycle_count; // variable for count during idle task
+//
+static uint32_t ulIdleCycleCount;
 
-// Create Queue
-static xQueueHandle msg_queue;
-static const uint8_t msg_queue_len = 5; // queue length
+// Queue declaration
+QueueHandle_t xQueue;
 
-// RTOS Function Prototypes
+// Tasks Function prototype
+static void vLedBlink(void *param);
+static void vSenderTask(void *param);
+static void vReceiverTask(void *param);
 void vApplicationIdleHook(void);
-void myTask1(void *pvParameters);
-void printMessages(void *pvParameters);
 
 #endif
 
@@ -36,7 +35,7 @@ extern void initialise_monitor_handles();
 
 // Function Prototypes
 extern void clkInit(void);
-extern void ledBlink(void);
+extern void resetCtrl(void);
 extern void (*usart1_handler)(void);
 
 int main_queue(void) {
@@ -59,7 +58,7 @@ int main_queue(void) {
 
   // Enable USART
   usart_setup(USART1, 115200);
-  usart1_handler = ledBlink;
+  usart1_handler = resetCtrl;
   usart_enable_irq(USART1);
   // usart_enable_tcie(USART1);
   usart_enable_rxneie(USART1);
@@ -71,12 +70,19 @@ int main_queue(void) {
 
 #if defined(__RTOS__) && defined(__QUEUE_DEMO__)
 
-  // Create Tasks
-  xTaskCreate(myTask1, "task1", 128, NULL, tskIDLE_PRIORITY + 1, NULL);
-  xTaskCreate(printMessages, "task2", 128, NULL, tskIDLE_PRIORITY + 2, NULL);
+  xQueue = xQueueCreate(5, sizeof(uint8_t));
 
-  // Start Scheduler
-  vTaskStartScheduler();
+  if (xQueue != NULL) {
+
+    xTaskCreate(vLedBlink, "LedBlink", 128, NULL, tskIDLE_PRIORITY + 2, NULL);
+    xTaskCreate(vSenderTask, "Sender1", 512, (void *)'a', tskIDLE_PRIORITY + 1,
+                NULL);
+    xTaskCreate(vReceiverTask, "Receiver", 512, NULL, tskIDLE_PRIORITY + 2,
+                NULL);
+
+    vTaskStartScheduler();
+  } else {
+  }
 
 #endif
 
@@ -95,24 +101,51 @@ int main_queue(void) {
 
 #if defined(__RTOS__) && defined(__QUEUE_DEMO__)
 
-// Blink led every 500ms
-void myTask1(void *pvParameters) {
+static void vLedBlink(void *param) {
   for (;;) {
     gpio_pin_toggle(GPIOC, 13);
-    vTaskDelay(500);
+    vTaskDelay(1000);
   }
 }
 
-void printMessages(void *pvParameters) {
-  int item;
+static void vSenderTask(void *param) {
+  uint8_t lValueToSend;
+  BaseType_t xStatus;
+
+  lValueToSend = (uint8_t)param;
 
   for (;;) {
-    if (xQueueReceive(msg_queue, (void *)&item, 0) == pdTRUE)
-      __NOP();
+    xStatus = xQueueSendToBack(xQueue, &lValueToSend, 100);
+    if (xStatus != pdPASS) {
+      usart_send_string(USART1, "Could not send to the queue.\r\n");
+    }
   }
 }
 
-// Increment ul_idle_cycle_count during idle time
-void vApplicationIdleHook(void) { ul_idle_cycle_count++; }
+static void vReceiverTask(void *param) {
+  uint8_t lReceivedValue;
+  BaseType_t xStatus;
+  const TickType_t xTickToWait = pdMS_TO_TICKS(50);
+
+  for (;;) {
+    if (uxQueueMessagesWaiting(xQueue) != 0) {
+      usart_send_string(USART1, "Queue is full!\r\n");
+    }
+
+    xStatus = xQueueReceive(xQueue, &lReceivedValue, xTickToWait);
+
+    if (xStatus == pdPASS) {
+      usart_send_string(USART1, "Received = ");
+      usart_write(USART1, lReceivedValue);
+      usart_send_string(USART1, "\n");
+    } else {
+      usart_send_string(USART1, "Could not receive value from the queue\r\n");
+    }
+
+    vTaskDelay(100);
+  }
+}
+
+void vApplicationIdleHook(void) { ulIdleCycleCount++; }
 
 #endif
