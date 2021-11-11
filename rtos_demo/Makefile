@@ -6,7 +6,7 @@ BUILD_DIR = build
 
 all:
 	make format \
-	&& cd ${BUILD_DIR} && make && cd ..
+	&& cd ${BUILD_DIR} && ninja && cd ..
 
 cmake:
 		cmake --no-warn-unused-cli \
