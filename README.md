@@ -13,7 +13,7 @@ Development Tools: VS Code, OpenOCD, CMake, Ninja, Make, ARM GCC Compiler, and S
 5. Flash Driver
 6. I2C Driver
 7. FreeRTOS Demo
-8. DMA Driver (in-progress) 
+8. DMA Driver
 
 9. Custom Bootloader (in-progress)
 10. PWM Driver (in-progress)
