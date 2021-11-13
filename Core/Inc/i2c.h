@@ -2,6 +2,7 @@
 #define _I2C_H_
 
 #include "stdbool.h"
+#include "stddef.h"
 #include "stm32f1xx.h"
 
 /* From datasheet:
@@ -43,8 +44,9 @@
 #define I2C_SCL_FREQ_50KHZ 0x0168U
 #define I2C_SCL_FREQ_20KHZ 0x0384U
 
+#define BUFFER_SIZE 128
+
 void i2c_set_transmit_data(uint8_t* _data);
-void i2c_set_slave_address(uint8_t _address);
 uint8_t i2c_get_receive_buffer();
 
 // I2C Control Registers
@@ -60,17 +62,16 @@ void i2c_dma_last_transfer(I2C_TypeDef* i2cx); // next DMA eot is the last trans
 void i2c_dma_not_last_transfer(I2C_TypeDef* i2cx); // next DMA eot is not the last transfer
 
 // I2C Communication Flow Helper Functions
-void i2c_master_start(I2C_TypeDef* i2cx);
-void i2c_master_write(I2C_TypeDef* i2cx);
-void i2c_master_read(I2C_TypeDef* i2cx);
-void i2c_master_read_data(I2C_TypeDef* i2cx);
-void i2c_master_send_data(I2C_TypeDef* i2cx);
-void i2c_master_stop(I2C_TypeDef* i2cx);
 
-void i2c_master_start_it(I2C_TypeDef* i2cx);
-void i2c_master_write_it(I2C_TypeDef* i2cx);
-void i2c_master_send_data_it(I2C_TypeDef* i2cx);
-void i2c_master_stop_it(I2C_TypeDef* i2cx);
+void i2c_master_write_data(I2C_TypeDef* i2cx, uint8_t* _data, uint8_t size, uint8_t address);
+void i2c_master_read_data(I2C_TypeDef* i2cx, uint8_t size, uint8_t _address);
+void i2c_master_write_data_it(I2C_TypeDef* i2cx, uint8_t* _data, uint8_t _address);
+void i2c_master_read_data_it(I2C_TypeDef* i2cx, uint8_t size, uint8_t _address);
+
+// void i2c_master_write_data_it(I2C_TypeDef* i2cx);
+// void i2c_master_write_it(I2C_TypeDef* i2cx);
+// void i2c_master_send_data_it(I2C_TypeDef* i2cx);
+// void i2c_master_stop_it(I2C_TypeDef* i2cx);
 
 // I2C Interrupts
 void i2c_dma_enable(I2C_TypeDef* i2cx); // enable DMA requests
@@ -84,11 +85,11 @@ void i2c_itevt_disable(I2C_TypeDef* i2cx); // disable event interrupt
 void i2c_iterr_disable(I2C_TypeDef* i2cx); // disable error interrupt
 
 // I2C Check Flags
-bool i2c_sb(I2C_TypeDef* i2cx);
-bool i2c_addr(I2C_TypeDef* i2cx);
-bool i2c_btf(I2C_TypeDef* i2cx);
-bool i2c_rxne(I2C_TypeDef* i2cx);
-bool i2c_txe(I2C_TypeDef* i2cx);
-bool i2c_af(I2C_TypeDef* i2cx);
+bool i2c_start_bit_flag(I2C_TypeDef* i2cx);
+bool i2c_address_flag(I2C_TypeDef* i2cx);
+bool i2c_byte_transfer_flag(I2C_TypeDef* i2cx);
+bool i2c_receiver_not_empty_flag(I2C_TypeDef* i2cx);
+bool i2c_trasmitter_empty_flag(I2C_TypeDef* i2cx);
+bool i2c_acknowledge_flag(I2C_TypeDef* i2cx);
 
 #endif

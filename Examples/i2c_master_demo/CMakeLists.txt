@@ -1,5 +1,5 @@
 
-set(EXECUTABLE i2c_master_write_demo)
+set(EXECUTABLE i2c_master_demo)
 
 # Executable Files
 add_executable(${EXECUTABLE} 
@@ -10,6 +10,10 @@ add_executable(${EXECUTABLE}
 # Embedded Macros
 target_compile_definitions(${EXECUTABLE} PRIVATE 
     STM32F103xB
+    # MASTER_WRITE_DEMO
+    # MASTER_READ_DEMO
+    # MASTER_WRITE_INTERRUPT_DEMO
+    MASTER_READ_INTERRUPT_DEMO
 )
 
 # Add header directories to target

@@ -7,7 +7,6 @@
 #include "usart.h"
 
 void clkInit(void);
-void resetCtrl(void);
 
 int main(void)
 {
@@ -29,13 +28,13 @@ int main(void)
     i2c_itbuf_enable(I2C1);
     i2c_itevt_enable(I2C1);
     i2c_iterr_enable(I2C1);
-    i2c_set_transmit_data("Hello World");
-    uint8_t address = 0x27;
-    i2c_set_slave_address(address);
+
+#if defined(MASTER_WRITE_INTERRUPT_DEMO) || defined(MASTER_READ_INTERRUPT_DEMO)
     NVIC_EnableIRQ(I2C1_EV_IRQn);
-    // NVIC_EnableIRQ(I2C1_ER_IRQn);
+    NVIC_EnableIRQ(I2C1_ER_IRQn);
+#endif // MACRO
+
     i2c_enable(I2C1);
-    i2c_master_start_it(I2C1);
 
     // ****************************************************** //
 
@@ -43,28 +42,24 @@ int main(void)
     while (1) {
 
         gpio_pin_toggle(GPIOC, 13);
+        delay_ms(1000);
 
-        delay_ms(250);
+#ifdef MASTER_READ_DEMO
+        i2c_master_read_data(I2C1, 6, 0x08);
+        // i2c_master_read_data(I2C1, 1);
+#endif
 
-        // ****** I2C write to device polling method ***** //
+#ifdef MASTER_WRITE_DEMO
+        i2c_master_write_data(I2C1, "Hello World", 11, 0x27);
+#endif
 
-        // i2c_start(I2C1);
-        // i2c_write(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_send_data(I2C1);
-        // i2c_stop(I2C1);
-        // i2c_set_data("Hello World");
+#ifdef MASTER_WRITE_INTERRUPT_DEMO
+        i2c_master_write_data_it(I2C1, "Hello World with Interrupt", 0x27);
+#endif
 
-        // *********************************** //
+#ifdef MASTER_READ_INTERRUPT_DEMO
+        i2c_master_read_data_it(I2C1, 6, 0x08);
+#endif
     }
 }
 
