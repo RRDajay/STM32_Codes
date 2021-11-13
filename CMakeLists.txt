@@ -41,5 +41,6 @@ file(GLOB_RECURSE RTOS_SOURCES
 add_subdirectory(Examples/blink_led)
 add_subdirectory(Examples/usart_demo)
 add_subdirectory(Examples/dma_usart_demo)
-add_subdirectory(Examples/i2c_demo)
+add_subdirectory(Examples/i2c_master_read_demo)
+add_subdirectory(Examples/i2c_master_write_demo)
 add_subdirectory(Examples/rtos_demo)
