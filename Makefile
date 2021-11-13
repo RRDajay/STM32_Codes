@@ -1,5 +1,5 @@
 # Target name
-TARGET = i2c_master_write_demo
+TARGET = i2c_master_demo
 EXAMPLES = Examples
 
 # # Build path

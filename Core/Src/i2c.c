@@ -237,3 +237,4 @@ void I2C1_ER_IRQHandler(void)
         i2c_master_stop_it(I2C1);
     }
 }
+
