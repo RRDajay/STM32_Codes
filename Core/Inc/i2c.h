@@ -43,43 +43,45 @@
 #define I2C_SCL_FREQ_50KHZ 0x0168U
 #define I2C_SCL_FREQ_20KHZ 0x0384U
 
-void i2c_set_data(uint8_t* _data);
+void i2c_set_transmit_data(uint8_t* _data);
 void i2c_set_slave_address(uint8_t _address);
-uint8_t
-i2c_get_receive_buffer();
+uint8_t i2c_get_receive_buffer();
 
 // I2C Control Registers
 void i2c_init(I2C_TypeDef* i2cx, uint8_t i2c_mode, uint32_t _apb1_clk);
 void i2c_enable(I2C_TypeDef* i2cx);
 void i2c_disable(I2C_TypeDef* i2cx);
 void i2c_sw_reset(I2C_TypeDef* i2cx);
+void i2c_enable_pec(I2C_TypeDef* i2cx);
+void i2c_disable_pec(I2C_TypeDef* i2cx);
+void i2c_enable_clkstretch(I2C_TypeDef* i2cx);
+void i2c_disable_clkstretch(I2C_TypeDef* i2cx);
 void i2c_dma_last_transfer(I2C_TypeDef* i2cx); // next DMA eot is the last transfer
-void i2c_dma_not_last_transfer(
-    I2C_TypeDef* i2cx); // next DMA eot is not the last transfer
+void i2c_dma_not_last_transfer(I2C_TypeDef* i2cx); // next DMA eot is not the last transfer
 
 // I2C Communication Flow Helper Functions
-void i2c_start(I2C_TypeDef* i2cx);
-void i2c_write(I2C_TypeDef* i2cx);
-void i2c_read(I2C_TypeDef* i2cx);
-void i2c_read_data(I2C_TypeDef* i2cx);
-void i2c_send_data(I2C_TypeDef* i2cx);
-void i2c_stop(I2C_TypeDef* i2cx);
+void i2c_master_start(I2C_TypeDef* i2cx);
+void i2c_master_write(I2C_TypeDef* i2cx);
+void i2c_master_read(I2C_TypeDef* i2cx);
+void i2c_master_read_data(I2C_TypeDef* i2cx);
+void i2c_master_send_data(I2C_TypeDef* i2cx);
+void i2c_master_stop(I2C_TypeDef* i2cx);
 
-void i2c_start_it(I2C_TypeDef* i2cx);
-void i2c_write_it(I2C_TypeDef* i2cx);
-void i2c_send_data_it(I2C_TypeDef* i2cx);
-void i2c_stop_it(I2C_TypeDef* i2cx);
+void i2c_master_start_it(I2C_TypeDef* i2cx);
+void i2c_master_write_it(I2C_TypeDef* i2cx);
+void i2c_master_send_data_it(I2C_TypeDef* i2cx);
+void i2c_master_stop_it(I2C_TypeDef* i2cx);
 
 // I2C Interrupts
-void i2c_dmaen_enable(I2C_TypeDef* i2cx); // enable DMA requests
-void i2c_itbufen_enable(I2C_TypeDef* i2cx); // enable buffer interrupt
-void i2c_itevten_enable(I2C_TypeDef* i2cx); // enable event interrupt
-void i2c_iterren_enable(I2C_TypeDef* i2cx); // enable error interrupt
+void i2c_dma_enable(I2C_TypeDef* i2cx); // enable DMA requests
+void i2c_itbuf_enable(I2C_TypeDef* i2cx); // enable buffer interrupt
+void i2c_itevt_enable(I2C_TypeDef* i2cx); // enable event interrupt
+void i2c_iterr_enable(I2C_TypeDef* i2cx); // enable error interrupt
 
-void i2c_dmaen_disable(I2C_TypeDef* i2cx); // disable DMA requests
-void i2c_itbufen_disable(I2C_TypeDef* i2cx); // disable buffer interrupt
-void i2c_itevten_disable(I2C_TypeDef* i2cx); // disable event interrupt
-void i2c_iterren_disable(I2C_TypeDef* i2cx); // disable error interrupt
+void i2c_dma_disable(I2C_TypeDef* i2cx); // disable DMA requests
+void i2c_itbuf_disable(I2C_TypeDef* i2cx); // disable buffer interrupt
+void i2c_itevt_disable(I2C_TypeDef* i2cx); // disable event interrupt
+void i2c_iterr_disable(I2C_TypeDef* i2cx); // disable error interrupt
 
 // I2C Check Flags
 bool i2c_sb(I2C_TypeDef* i2cx);

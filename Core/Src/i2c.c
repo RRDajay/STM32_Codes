@@ -4,7 +4,7 @@ static uint8_t* data;
 static uint8_t receiveBuffer[128];
 static uint8_t address;
 
-void i2c_set_data(uint8_t* _data) { data = _data; }
+void i2c_set_transmit_data(uint8_t* _data) { data = _data; }
 void i2c_set_slave_address(uint8_t _address) { address = _address; }
 
 // I2C Clock Control Setup
@@ -53,7 +53,7 @@ void i2c_dma_not_last_transfer(I2C_TypeDef* i2cx)
 } // next DMA eot is not the last transfer
 
 // I2C Communication Flow Helper Functions
-void i2c_start(I2C_TypeDef* i2cx)
+void i2c_master_start(I2C_TypeDef* i2cx)
 {
     // Acknowledge enable
     i2cx->CR1 |= (1U << 10U);
@@ -61,7 +61,7 @@ void i2c_start(I2C_TypeDef* i2cx)
     // Generate Start
     i2cx->CR1 |= (1U << 8U);
 }
-void i2c_write(I2C_TypeDef* i2cx)
+void i2c_master_write(I2C_TypeDef* i2cx)
 {
     // // Check is SB bit is set
     while (!i2c_sb(i2cx))
@@ -77,7 +77,7 @@ void i2c_write(I2C_TypeDef* i2cx)
     // Clear ADDR flag by reading SR1 and SR2
     uint16_t temp = i2cx->SR1 | i2cx->SR2;
 }
-void i2c_read(I2C_TypeDef* i2cx)
+void i2c_master_read(I2C_TypeDef* i2cx)
 {
     // // Check is SB bit is set
     while (!i2c_sb(i2cx))
@@ -93,7 +93,7 @@ void i2c_read(I2C_TypeDef* i2cx)
     // Clear ADDR flag by reading SR1 and SR2
     uint16_t temp = i2cx->SR1 | i2cx->SR2;
 }
-void i2c_read_data(I2C_TypeDef* i2cx)
+void i2c_master_read_data(I2C_TypeDef* i2cx)
 {
     // Check if receive data register is not empty
     while (!(i2c_rxne(i2cx)))
@@ -103,7 +103,7 @@ void i2c_read_data(I2C_TypeDef* i2cx)
     uint8_t temp = i2cx->DR;
 }
 
-void i2c_send_data(I2C_TypeDef* i2cx)
+void i2c_master_send_data(I2C_TypeDef* i2cx)
 {
     // Check if data register is empty
     while (!(i2cx->SR1 & (1U << 7U)))
@@ -117,9 +117,9 @@ void i2c_send_data(I2C_TypeDef* i2cx)
     while (!((i2cx->SR1 & (1U << 2U))))
         ;
 }
-void i2c_stop(I2C_TypeDef* i2cx) { i2cx->CR1 |= (1U << 9U); }
+void i2c_master_stop(I2C_TypeDef* i2cx) { i2cx->CR1 |= (1U << 9U); }
 
-void i2c_start_it(I2C_TypeDef* i2cx)
+void i2c_master_start_it(I2C_TypeDef* i2cx)
 {
     // Acknowledge enable
     i2cx->CR1 |= (1U << 10U);
@@ -127,43 +127,43 @@ void i2c_start_it(I2C_TypeDef* i2cx)
     // Generate Start
     i2cx->CR1 |= (1U << 8U);
 }
-void i2c_write_it(I2C_TypeDef* i2cx) { i2cx->DR = address << 1; }
-void i2c_read_it(I2C_TypeDef* i2cx) { i2cx->DR = (address << 1) | 1; }
-void i2c_read_data_it(I2C_TypeDef* i2cx) { uint8_t temp = i2cx->DR; }
-void i2c_send_data_it(I2C_TypeDef* i2cx) { i2cx->DR = *data; }
-void i2c_stop_it(I2C_TypeDef* i2cx) { i2cx->CR1 |= (1U << 9U); }
+void i2c_master_write_it(I2C_TypeDef* i2cx) { i2cx->DR = address << 1; }
+void i2c_master_read_it(I2C_TypeDef* i2cx) { i2cx->DR = (address << 1) | 1; }
+void i2c_master_read_data_it(I2C_TypeDef* i2cx) { uint8_t temp = i2cx->DR; }
+void i2c_master_send_data_it(I2C_TypeDef* i2cx) { i2cx->DR = *data; }
+void i2c_master_stop_it(I2C_TypeDef* i2cx) { i2cx->CR1 |= (1U << 9U); }
 
 // I2C Interrupts
-void i2c_dmaen_enable(I2C_TypeDef* i2cx)
+void i2c_dma_enable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 |= 1U << 11U;
 } // enable DMA requests
-void i2c_itbufen_enable(I2C_TypeDef* i2cx)
+void i2c_itbuf_enable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 |= 1U << 10U;
 } // enable buffer interrupts
-void i2c_itevten_enable(I2C_TypeDef* i2cx)
+void i2c_itevt_enable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 |= 1U << 9U;
 } // enable event interrupts
-void i2c_iterren_enable(I2C_TypeDef* i2cx)
+void i2c_iterr_enable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 |= 1U << 8U;
 } // enable error interrupts
 
-void i2c_dmaen_disable(I2C_TypeDef* i2cx)
+void i2c_dma_disable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 &= ~(1U << 11U);
 } // disable DMA requests
-void i2c_itbufen_disable(I2C_TypeDef* i2cx)
+void i2c_itbuf_disable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 &= ~(1U << 10U);
 } // disable buffer interrupts
-void i2c_itevten_disable(I2C_TypeDef* i2cx)
+void i2c_itevt_disable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 &= ~(1U << 9U);
 } // disable event interrupts
-void i2c_iterren_disable(I2C_TypeDef* i2cx)
+void i2c_iterr_disable(I2C_TypeDef* i2cx)
 {
     i2cx->CR2 &= ~(1U << 8U);
 } // disable error interrupts
@@ -200,7 +200,7 @@ void I2C1_EV_IRQHandler(void)
 {
 
     if (i2c_sb(I2C1)) { // Check if start bit is set
-        i2c_write_it(I2C1);
+        i2c_master_write_it(I2C1);
     }
 
     if (i2c_addr(I2C1)) { // Check if addr bit is set
@@ -209,21 +209,21 @@ void I2C1_EV_IRQHandler(void)
 
     if (i2c_txe(I2C1)) { // Check if txe bit is set
         if (*data) {
-            i2c_send_data_it(I2C1);
+            i2c_master_send_data_it(I2C1);
             data++;
         }
 
         if (i2c_btf(I2C1)) { // Check if btf is set
-            i2c_stop_it(I2C1);
+            i2c_master_stop_it(I2C1);
         }
     }
 
     if (i2c_rxne(I2C1)) { // Check if rxne is set
-        i2c_read_data_it(I2C1);
+        i2c_master_read_data_it(I2C1);
 
         if (i2c_btf(I2C1)) {
             I2C1->CR1 &= ~(1U << 10U);
-            i2c_stop_it(I2C1);
+            i2c_master_stop_it(I2C1);
             uint8_t temp5 = I2C1->DR;
             uint8_t temp6 = I2C1->DR;
         }
@@ -234,7 +234,6 @@ void I2C1_ER_IRQHandler(void)
 {
     // Check if acknowledge failure
     if (i2c_af(I2C1)) {
-        i2c_stop_it(I2C1);
-        i2c_start_it(I2C1);
+        i2c_master_stop_it(I2C1);
     }
 }
