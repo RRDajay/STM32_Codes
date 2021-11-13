@@ -14,7 +14,23 @@
 
 #if defined(__RTOS__) && defined(__QUEUE_DEMO__)
 
-//
+typedef enum {
+    eSender1,
+    eSender2
+} DataSource_t;
+
+typedef struct {
+    uint8_t* ucValue;
+    DataSource_t eDataSource;
+} Data_t;
+
+// Dummy Data
+static Data_t xStructsToSend[2] = {
+    { "Received from sender1", eSender1 },
+    { "Received from sender2", eSender2 }
+};
+
+// Cycle count during applicationIdle
 static uint32_t ulIdleCycleCount;
 
 // Queue declaration
@@ -71,14 +87,16 @@ int main_queue(void)
 
 #if defined(__RTOS__) && defined(__QUEUE_DEMO__)
 
-    xQueue = xQueueCreate(5, sizeof(uint8_t));
+    xQueue = xQueueCreate(3, sizeof(Data_t));
 
     if (xQueue != NULL) {
 
         xTaskCreate(vLedBlink, "LedBlink", 128, NULL, tskIDLE_PRIORITY + 2, NULL);
-        xTaskCreate(vSenderTask, "Sender1", 512, (void*)'a', tskIDLE_PRIORITY + 1,
+        xTaskCreate(vSenderTask, "Sender1", 512, &(xStructsToSend[0]), tskIDLE_PRIORITY + 2,
             NULL);
-        xTaskCreate(vReceiverTask, "Receiver", 512, NULL, tskIDLE_PRIORITY + 2,
+        xTaskCreate(vSenderTask, "Sender2", 512, &(xStructsToSend[1]), tskIDLE_PRIORITY + 2,
+            NULL);
+        xTaskCreate(vReceiverTask, "Receiver", 512, NULL, tskIDLE_PRIORITY + 1,
             NULL);
 
         vTaskStartScheduler();
@@ -112,41 +130,46 @@ static void vLedBlink(void* param)
 
 static void vSenderTask(void* param)
 {
-    uint8_t lValueToSend;
     BaseType_t xStatus;
-
-    lValueToSend = (uint8_t)param;
+    const TickType_t xTicksToWait = pdMS_TO_TICKS(100);
 
     for (;;) {
-        xStatus = xQueueSendToBack(xQueue, &lValueToSend, 100);
+        xStatus = xQueueSendToBack(xQueue, param, xTicksToWait);
         if (xStatus != pdPASS) {
             usart_send_string(USART1, "Could not send to the queue.\r\n");
         }
     }
+
+    vTaskDelay(100);
 }
 
 static void vReceiverTask(void* param)
 {
-    uint8_t lReceivedValue;
+    Data_t xReceivedStructure;
     BaseType_t xStatus;
     const TickType_t xTickToWait = pdMS_TO_TICKS(50);
 
     for (;;) {
-        if (uxQueueMessagesWaiting(xQueue) != 0) {
+        if (uxQueueMessagesWaiting(xQueue) != 3) {
             usart_send_string(USART1, "Queue is full!\r\n");
         }
 
-        xStatus = xQueueReceive(xQueue, &lReceivedValue, xTickToWait);
+        xStatus = xQueueReceive(xQueue, &xReceivedStructure, xTickToWait);
 
         if (xStatus == pdPASS) {
-            usart_send_string(USART1, "Received = ");
-            usart_write(USART1, lReceivedValue);
-            usart_send_string(USART1, "\n");
-        } else {
-            usart_send_string(USART1, "Could not receive value from the queue\r\n");
-        }
+            if (xReceivedStructure.eDataSource == eSender1) {
+                usart_send_string(USART1, "From sender 1 = ");
+                usart_send_string(USART1, xReceivedStructure.ucValue);
+                usart_send_string(USART1, "\r\n");
 
-        vTaskDelay(100);
+            } else {
+                usart_send_string(USART1, "From sender 2 = ");
+                usart_send_string(USART1, xReceivedStructure.ucValue);
+                usart_send_string(USART1, "\r\n");
+            }
+        } else {
+            usart_send_string(USART1, "Could not receive from the queue.\r\n");
+        }
     }
 }
 

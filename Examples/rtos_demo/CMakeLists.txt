@@ -14,8 +14,8 @@ add_executable(${EXECUTABLE}
 target_compile_definitions(${EXECUTABLE} PRIVATE 
     STM32F103xB
     __RTOS__
-    __TASKS_DEMO__
-    # __QUEUE_DEMO__
+    # __TASKS_DEMO__
+    __QUEUE_DEMO__
     # __SEMIHOSTING__
     )
 

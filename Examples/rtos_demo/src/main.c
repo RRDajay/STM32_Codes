@@ -26,10 +26,6 @@ extern void main_queue();
 int main()
 {
 
-    int y = 10;
-    int z = 10;
-
-    int x = 1 / (y - z);
 #ifdef __TASKS_DEMO__
     main_tasks();
 #endif
@@ -102,8 +98,10 @@ void clkInit(void)
 
 void resetCtrl(void)
 {
-    usart_send_string(USART1, "\n\t****MICROCONTROLLER RESET!!****\t\n");
-    for (uint32_t i = 0; i < 10000000; i++)
-        __NOP();
-    NVIC_SystemReset();
+    if (usart_read(USART1) == 'r') {
+        usart_send_string(USART1, "\n\t****MICROCONTROLLER RESET!!****\t\n");
+        for (uint32_t i = 0; i < 10000000; i++)
+            __NOP();
+        NVIC_SystemReset();
+    }
 }
