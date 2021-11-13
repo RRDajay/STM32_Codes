@@ -1,5 +1,5 @@
 
-set(EXECUTABLE dma_demo)
+set(EXECUTABLE dma_usart_demo)
 
 # Executable Files
 add_executable(${EXECUTABLE} 

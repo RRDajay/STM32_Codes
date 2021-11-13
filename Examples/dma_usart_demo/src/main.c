@@ -8,7 +8,11 @@
 
 void clkInit(void);
 
+void dma_set_usart1_rx(void);
+void dma_set_usart1_tx(void);
+
 static volatile uint8_t receiveBuffer[11];
+static volatile uint8_t* transmitString = "Hello World\r\n";
 
 int main(void)
 {
@@ -26,35 +30,28 @@ int main(void)
     gpio_config_output_pin(GPIOA, 9, OUTPUT_AF_PP, S50);
     gpio_config_input_pin(GPIOA, 10, INPUT_PU_PD);
 
-    // Configure DMA
-    rcc_dma1_clock_enable();
-    usart_enable_dma_receiver(USART1);
-
-    dma_enable_minc(DMA1_Channel5);
-    dma_enable_tcie(DMA1_Channel5);
-    dma_set_dir(DMA1_Channel5, READ_FROM_PERIPHERAL);
-    dma_enable_circ(DMA1_Channel5);
-
-    // Set size of buffer
-    dma_set_cntdr(DMA1_Channel5, sizeof(receiveBuffer));
-
-    // Write USART_DR address to DMA
-    dma_set_cpar(DMA1_Channel5, (uint32_t)&USART1->DR);
-
-    // Write memory address to DMA
-    dma_set_cmar(DMA1_Channel5, (uint32_t)receiveBuffer);
-
     // Enable usart (default settings)
     usart_setup(USART1, 115200);
     usart_enable(USART1);
+    usart_send_string(USART1, "Setting up STM32...\r\n");
 
     // Enable DMA
-    dma_enable_channel(DMA1_Channel5);
-
+    dma_set_usart1_rx();
+    dma_set_usart1_tx();
+    NVIC_EnableIRQ(DMA1_Channel4_IRQn);
     NVIC_EnableIRQ(DMA1_Channel5_IRQn);
-
+    // dma_enable_channel(DMA1_Channel4);
+    dma_enable_channel(DMA1_Channel5);
     /* Loop forever */
     while (1) {
+    }
+}
+
+void DMA1_Channel4_IRQHandler(void)
+{
+    if (dma_transfer_complete_flag(DMA1, CH4)) {
+        dma_disable_channel(DMA1_Channel4);
+        dma_clear_transfer_complete_flag(DMA1, CH4);
     }
 }
 
@@ -62,6 +59,7 @@ void DMA1_Channel5_IRQHandler(void)
 {
     if (dma_transfer_complete_flag(DMA1, CH5)) {
         gpio_pin_toggle(GPIOC, 13);
+        dma_enable_channel(DMA1_Channel4);
         dma_clear_transfer_complete_flag(DMA1, CH5);
     }
 }
@@ -102,4 +100,44 @@ void clkInit(void)
     // Update System Core Clock
     SystemCoreClockUpdate();
     systick_init();
+}
+
+void dma_set_usart1_rx(void)
+{
+    // Configure DMA for USART1_RX
+    rcc_dma1_clock_enable();
+    usart_enable_dma_receiver(USART1);
+
+    dma_enable_minc(DMA1_Channel5);
+    dma_enable_tcie(DMA1_Channel5);
+    dma_set_dir(DMA1_Channel5, READ_FROM_PERIPHERAL);
+    dma_enable_circ(DMA1_Channel5);
+
+    // Set size of buffer
+    dma_set_cntdr(DMA1_Channel5, sizeof(receiveBuffer));
+
+    // Write USART_DR address to DMA
+    dma_set_cpar(DMA1_Channel5, (uint32_t)&USART1->DR);
+
+    // Write memory address to DMA
+    dma_set_cmar(DMA1_Channel5, (uint32_t)receiveBuffer);
+}
+
+void dma_set_usart1_tx(void)
+{
+    // Configure DMA for USART1_TX
+    usart_enable_dma_trasmitter(USART1);
+    dma_enable_minc(DMA1_Channel4);
+    dma_enable_tcie(DMA1_Channel4);
+    dma_set_dir(DMA1_Channel4, READ_FROM_MEM);
+    dma_enable_circ(DMA1_Channel4);
+
+    // Set size of buffer
+    dma_set_cntdr(DMA1_Channel4, 13);
+
+    // Write USART_DR address to DMA
+    dma_set_cpar(DMA1_Channel4, (uint32_t)&USART1->DR);
+
+    // Write memory address to DMA
+    dma_set_cmar(DMA1_Channel4, (uint32_t)transmitString);
 }
