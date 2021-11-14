@@ -224,7 +224,9 @@ void I2C1_EV_IRQHandler(void)
     }
 
     if (i2c_address_flag(I2C1)) {
+        // I2C1->CR1 &= ~(1u << 10u);
         uint16_t dummyRead = I2C1->SR1 | I2C1->SR2;
+        // I2C1->CR1 |= 1u << 9u;
     }
 
     if (i2c_trasmitter_empty_flag(I2C1)) {
@@ -235,17 +237,15 @@ void I2C1_EV_IRQHandler(void)
     }
 
     if (i2c_receiver_not_empty_flag(I2C1)) {
-        if (receiveSize >= 2) {
+        if (receiveSize > 3) {
             volatile uint8_t temp = I2C1->DR;
-            receiveBufferPut(temp);
-
-            receiveSize = receiveSize - 2;
+            receiveBufferPut(I2C1->DR);
+            receiveSize--;
+        } else {
+            I2C1->CR1 &= ~(1U << 10U); // Acknowledge disable
+            I2C1->CR1 |= (1U << 9U); // Generate Stop Condition
+            receiveBufferPut(I2C1->DR);
         }
-    }
-
-    if (i2c_byte_transfer_flag(I2C1)) {
-        I2C1->CR1 &= ~(1U << 10U); // Acknowledge disable
-        I2C1->CR1 |= 1u << 9u;
     }
 }
 

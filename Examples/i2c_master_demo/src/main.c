@@ -58,7 +58,8 @@ int main(void)
 #endif
 
 #ifdef MASTER_READ_INTERRUPT_DEMO
-        i2c_master_read_data_it(I2C1, 6, 0x08);
+        i2c_master_read_data_it(I2C1, 7, 0x08);
+       __NOP();
 #endif
     }
 }
