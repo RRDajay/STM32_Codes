@@ -15,6 +15,15 @@
 
 #if defined(__RTOS__) && defined(__SOFTWARE_TIMER_DEMO__)
 
+// Timer Handle Definition
+static TimerHandle_t timer1 = NULL;
+static TimerHandle_t timer2 = NULL;
+
+// Timer callback declaration
+void myTimerCallback(TimerHandle_t xTimer);
+void LedBlinkTimerCallback(TimerHandle_t xTimer);
+
+// Task prototypes
 void Task1(void *params);
 void vApplicationdIdleHook(void);
 
@@ -57,7 +66,25 @@ int main_software_timers(void) {
 
   xTaskCreate(Task1, "task1", 128, NULL, tskIDLE_PRIORITY + 1, NULL);
 
+  timer1 =
+      xTimerCreate("One shot timer", 1000, pdTRUE, (void *)0, myTimerCallback);
+
+  timer2 =
+      xTimerCreate("timer2", 500, pdTRUE, (void *)1, LedBlinkTimerCallback);
+
+  if (timer1 == NULL && timer2 == NULL) {
+    usart_send_string(USART1, "Could not initialize timer\r\n");
+    while (1)
+      ;
+  } else {
+    usart_send_string(USART1, "Timers has been initialized\r\n");
+    xTimerStart(timer1, portMAX_DELAY);
+    xTimerStart(timer2, portMAX_DELAY);
+  }
+
   vTaskStartScheduler();
+  //   vTaskDelete(NULL);
+
 #endif
 
   /* Loop forever */
@@ -73,11 +100,17 @@ int main_software_timers(void) {
 
 void Task1(void *params) {
   for (;;) {
-    gpio_pin_toggle(GPIOC, 13);
-    vTaskDelay(500);
+    usart_send_string(USART1, "Hello from Task 1\r\n");
+    vTaskDelay(1000);
   }
 }
 
 void vApplicationIdleHook(void) {}
+
+void myTimerCallback(TimerHandle_t xTimer) {
+  usart_send_string(USART1, "Timer Expired\r\n");
+}
+
+void LedBlinkTimerCallback(TimerHandle_t xTimer) { gpio_pin_toggle(GPIOC, 13); }
 
 #endif
