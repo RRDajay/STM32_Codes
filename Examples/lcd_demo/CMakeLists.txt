@@ -1,31 +1,24 @@
-set(EXECUTABLE rtos_demo)
+
+set(EXECUTABLE lcd_demo)
 
 # Executable Files
-add_executable(${EXECUTABLE}
+add_executable(${EXECUTABLE} 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_queue_demo.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_tasks_demo.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_software_timers.c
     ${PROJECT_SOURCES}
-    ${STARTUP_CODE}
-    ${RTOS_SOURCES}
-)
+    ${STARTUP_CODE})
 
 # Embedded Macros
 target_compile_definitions(${EXECUTABLE} PRIVATE 
     STM32F103xB
-    __RTOS__
-    # __TASKS_DEMO__
-    # __QUEUE_DEMO__
-    # __SEMIHOSTING__
-    __SOFTWARE_TIMER_DEMO__
-    )
+    # MASTER_WRITE_DEMO
+    # MASTER_READ_DEMO
+    # MASTER_WRITE_INTERRUPT_DEMO
+    # MASTER_READ_INTERRUPT_DEMO
+)
 
 # Add header directories to target
 target_include_directories(${EXECUTABLE} PRIVATE
-    ${PROJECT_INCLUDE_DIRECTORIES}
-    ${RTOS_INCLUDE_DIRECTORIES}
-    )
+    ${PROJECT_INCLUDE_DIRECTORIES})
 
 # Compiler and linker options
 target_compile_options(${EXECUTABLE} PRIVATE
@@ -49,7 +42,7 @@ target_link_options(${EXECUTABLE} PRIVATE
     -lc
     -lm
     -lnosys
-    -Wl,-Map=${CMAKE_PROJECT_NAME}.map,--cref
+    -Wl,-Map=$<TARGET_FILE:${EXECUTABLE}>.map,--cref
     -Wl,--gc-sections
     -Wl,--print-memory-usage)
 

@@ -69,6 +69,12 @@ extern uint32_t SystemCoreClock;
 #define configQUEUE_REGISTRY_SIZE 8
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
 
+/* Timer definitions */
+#define configUSE_TIMERS 1
+#define configTIMER_TASK_PRIORITY 3
+#define configTIMER_QUEUE_LENGTH  10
+#define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
+
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 0
 #define configMAX_CO_ROUTINE_PRIORITIES (2)

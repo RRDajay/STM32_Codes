@@ -7,10 +7,11 @@ static uint8_t receiveBufferIndex;
 static uint8_t address;
 // static uint8_t
 
-static receiveBufferPut(uint8_t data)
+static void receiveBufferPut(uint8_t data)
 {
     if (receiveBufferIndex == BUFFER_SIZE) {
         receiveBufferIndex = 0;
+        ;
     }
 
     receiveBuffer[receiveBufferIndex] = data;
@@ -233,6 +234,8 @@ void I2C1_EV_IRQHandler(void)
         if (*data) {
             I2C1->DR = *data;
             data++;
+        } else {
+            I2C1->CR1 |= (1U << 9U); // Generate Stop Condition
         }
     }
 

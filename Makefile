@@ -1,5 +1,5 @@
 # Target name
-TARGET = i2c_master_demo
+TARGET = rtos_demo
 EXAMPLES = Examples
 
 # # Build path
