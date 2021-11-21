@@ -27,6 +27,10 @@ extern void main_queue();
 extern void main_software_timers();
 #endif
 
+#ifdef __SEMAPHORE_DEMO__
+extern void main_semaphore();
+#endif
+
 int main() {
 
 #ifdef __TASKS_DEMO__
@@ -39,6 +43,10 @@ int main() {
 
 #ifdef __SOFTWARE_TIMER_DEMO__
   main_software_timers();
+#endif
+
+#ifdef __SEMAPHORE_DEMO__
+  main_semaphore();
 #endif
 
 #if !(defined(__RTOS__))

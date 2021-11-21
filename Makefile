@@ -1,6 +1,6 @@
 # Target name
 TARGET = rtos_demo
-EXAMPLES = Examples
+Demo = Demo
 
 # # Build path
 BUILD_DIR = build
@@ -18,10 +18,10 @@ cmake:
 		-GNinja
 
 flash:
-	openocd -f interface/stlink-dap.cfg -f target/stm32f1x.cfg -c "program ${BUILD_DIR}/${EXAMPLES}/${TARGET}/${TARGET}.elf verify reset exit"
+	openocd -f interface/stlink-dap.cfg -f target/stm32f1x.cfg -c "program ${BUILD_DIR}/${Demo}/${TARGET}/${TARGET}.elf verify reset exit"
 
 format:
-	find Examples/ -iname *.h -o -iname *.c | xargs clang-format -i -style=WebKit && \
+	find Demo/ -iname *.h -o -iname *.c | xargs clang-format -i -style=WebKit && \
 	find Core -iname *.h -o -iname *.c | xargs clang-format -i -style=WebKit
 
 clean:

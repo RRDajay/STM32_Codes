@@ -38,9 +38,9 @@ file(GLOB_RECURSE RTOS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/FreeRTOS/MemMang/heap_4.c
     )
 
-add_subdirectory(Examples/blink_led)
-add_subdirectory(Examples/usart_demo)
-add_subdirectory(Examples/dma_usart_demo)
-add_subdirectory(Examples/i2c_master_demo)
-add_subdirectory(Examples/rtos_demo)
-add_subdirectory(Examples/lcd_demo)
+add_subdirectory(Demo/blink_led)
+add_subdirectory(Demo/usart_demo)
+add_subdirectory(Demo/dma_usart_demo)
+add_subdirectory(Demo/i2c_master_demo)
+add_subdirectory(Demo/rtos_demo)
+add_subdirectory(Demo/lcd_demo)
