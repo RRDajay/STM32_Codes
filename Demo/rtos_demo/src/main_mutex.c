@@ -13,7 +13,6 @@
 #include "systick.h"
 #endif
 
-
 #if defined(__RTOS__) && defined(__MUTEX_DEMO__)
 
 volatile static uint32_t ulIdleCycleCount;
