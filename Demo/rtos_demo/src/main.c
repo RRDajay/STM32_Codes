@@ -27,8 +27,8 @@ extern void main_queue();
 extern void main_software_timers();
 #endif
 
-#ifdef __SEMAPHORE_DEMO__
-extern void main_semaphore();
+#ifdef __MUTEX_DEMO__
+extern void main_mutex();
 #endif
 
 int main() {
@@ -45,8 +45,8 @@ int main() {
   main_software_timers();
 #endif
 
-#ifdef __SEMAPHORE_DEMO__
-  main_semaphore();
+#ifdef __MUTEX_DEMO__
+  main_mutex();
 #endif
 
 #if !(defined(__RTOS__))

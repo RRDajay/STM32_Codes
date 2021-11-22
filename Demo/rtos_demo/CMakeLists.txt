@@ -6,6 +6,7 @@ add_executable(${EXECUTABLE}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main_queue_demo.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main_tasks_demo.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main_software_timers.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_mutex.c
     ${PROJECT_SOURCES}
     ${STARTUP_CODE}
     ${RTOS_SOURCES}
@@ -18,7 +19,8 @@ target_compile_definitions(${EXECUTABLE} PRIVATE
     # __TASKS_DEMO__
     # __QUEUE_DEMO__
     # __SEMIHOSTING__
-    __SOFTWARE_TIMER_DEMO__
+    # __SOFTWARE_TIMER_DEMO__
+    __MUTEX_DEMO__
     )
 
 # Add header directories to target
