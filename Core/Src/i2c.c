@@ -257,5 +257,6 @@ void I2C1_ER_IRQHandler(void)
     // Check if acknowledge failure
     if (i2c_acknowledge_flag(I2C1)) {
         // i2c_master_stop_it(I2C1);
+        I2C1->CR1 |= (1U << 9U); // Generate Stop Condition
     }
 }
