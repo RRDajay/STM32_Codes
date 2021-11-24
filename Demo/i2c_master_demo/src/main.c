@@ -10,6 +10,7 @@ void clkInit(void);
 
 int main(void)
 {
+        
     clkInit();
 
     // Enable APB2 Clock PORTC
