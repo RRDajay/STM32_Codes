@@ -11,10 +11,10 @@ void lcd_init(void);
 
 int main(void)
 {
-        
+    // Initialize RCC     
     clkInit();
 
-    // Enable APB2 Clock PORTC
+    // Enable gpiob and gpioc clocks
     rcc_iopb_clock_enable();
     rcc_iopc_clock_enable();
 
@@ -30,40 +30,17 @@ int main(void)
     i2c_itbuf_enable(I2C1);
     i2c_itevt_enable(I2C1);
     i2c_iterr_enable(I2C1);
-
-#if defined(MASTER_WRITE_INTERRUPT_DEMO) || defined(MASTER_READ_INTERRUPT_DEMO)
-    NVIC_EnableIRQ(I2C1_EV_IRQn);
+    // NVIC_EnableIRQ(I2C1_EV_IRQn);
     NVIC_EnableIRQ(I2C1_ER_IRQn);
-#endif // MACRO
-
     i2c_enable(I2C1);
-
-    lcd_init();
-
     // ****************************************************** //
+    
+    lcd_init();
 
     /* Loop forever */
     while (1) {
-
         gpio_pin_toggle(GPIOC, 13);
         delay_ms(1000);
-
-#ifdef MASTER_READ_DEMO
-        i2c_master_read_data(I2C1, 6, 0x08);
-        // i2c_master_read_data(I2C1, 1);
-#endif
-
-#ifdef MASTER_WRITE_DEMO
-        i2c_master_write_data(I2C1, "Hello World", 11, 0x27);
-#endif
-
-#ifdef MASTER_WRITE_INTERRUPT_DEMO
-        i2c_master_write_data_it(I2C1, "Hello World with Interrupt", 0x27);
-#endif
-
-#ifdef MASTER_READ_INTERRUPT_DEMO
-        i2c_master_read_data_it(I2C1, 7, 0x08);
-#endif
     }
 }
 
@@ -106,18 +83,19 @@ void clkInit(void)
 }
 
 void lcd_init(void) {
-    delay_ms(15);
-    i2c_master_write_data(I2C1, "0", 1, 0x27);
-    delay_ms(5);
-    i2c_master_write_data(I2C1, "0", 1, 0x27);
-    delay_ms(1);
-    i2c_master_write_data(I2C1, "0", 1, 0x27);
     
-    // i2c_master_write_data(I2C1, " ", 1, 0x27);
-    // i2c_master_write_data(I2C1, "0", 1, 0x27);
-    // i2c_master_write_data(I2C1, "0", 1, 0x27);
-    // i2c_master_write_data(I2C1, "0", 1, 0x27);
-    
+    delay_ms(100);
 
+    i2c_master_write_data(I2C1, "\x30", 1, 0x27);
+    delay_ms(5);
+
+    i2c_master_write_data(I2C1, "\x30", 1, 0x27);
+    delay_ms(1);
+
+    i2c_master_write_data(I2C1, "\x30", 1, 0x27);
+    delay_ms(1);
+
+    i2c_master_write_data(I2C1, "\x20", 1, 0x27);
+    delay_ms(1);
 
 }

@@ -1,12 +1,12 @@
 # Target name
-TARGET = rtos_demo
+TARGET = lcd_demo
 Demo = Demo
 
 # # Build path
 BUILD_DIR = build
 
 all:
-	cd ${BUILD_DIR} && ninja && cd ..
+	cd ${BUILD_DIR} && ninja && cd .. && make flash
 
 cmake:
 		cmake --no-warn-unused-cli \
